@@ -33,7 +33,6 @@ import static javax.swing.JOptionPane.*;
 
 public class Main extends JFrame implements FormDrawer {
     final Font font = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
-    final Object[] objects = new Object[3];
 
     JMenu menu, settingsMenu;
     JMenuBar menuBar;
@@ -46,6 +45,7 @@ public class Main extends JFrame implements FormDrawer {
     private int row = 0;
     private int column = 0;
     private int columnLimit = 6;
+    private Object[] objects = new Object[columnLimit];
     private String password = "";
     private String name = "";
     private Map<String, Client> clientMap;
