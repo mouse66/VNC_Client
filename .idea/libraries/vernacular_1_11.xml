@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="vernacular-1.11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/library/vernacular-1.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/library/json-simple-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/library/jdom-2.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/library/json-simple-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
