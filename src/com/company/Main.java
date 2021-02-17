@@ -33,8 +33,9 @@ import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.*;
 
 public class Main extends JFrame implements FormDrawer {
-    final Font font = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
-
+    private static final Font FONT = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
+    private static final int COLUMN_LIMIT = 6;
+    private static final Object[] OBJECTS = new Object[COLUMN_LIMIT];
     JMenu menu, settingsMenu;
     JMenuBar menuBar;
     JTable table;
@@ -42,28 +43,13 @@ public class Main extends JFrame implements FormDrawer {
     FileWriter writer;
     Document document;
     File file, mainFolder;
+    Image notAvailable;
 
     private int row = 0;
     private int column = 0;
-    private int columnLimit = 6;
-    private Object[] objects = new Object[columnLimit];
     private String password = "";
     private String name = "";
     private Map<String, Client> clientMap;
-    private AncestorListener focusRequester = new AncestorListener() {
-        @Override
-        public void ancestorAdded(AncestorEvent event) {
-            event.getComponent().requestFocusInWindow();
-        }
-
-        @Override
-        public void ancestorRemoved(AncestorEvent event) {
-        }
-
-        @Override
-        public void ancestorMoved(AncestorEvent event) {
-        }
-    };
 
     Main() {
         File home = FileSystemView.getFileSystemView().getHomeDirectory();
@@ -82,12 +68,35 @@ public class Main extends JFrame implements FormDrawer {
             }
         }
 
+        File pathToFile = new File("not_available.jpg");
+        try {
+            notAvailable = ImageIO.read(pathToFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         Element clientElement = new Element("clients");
         document = new Document(clientElement);
         createUI();
 
         connectClientXML(file);
     }
+
+    private final AncestorListener focusRequester = new AncestorListener() {
+        @Override
+        public void ancestorAdded(AncestorEvent event) {
+            event.getComponent().requestFocusInWindow();
+        }
+
+        @Override
+        public void ancestorRemoved(AncestorEvent event) {
+        }
+
+        @Override
+        public void ancestorMoved(AncestorEvent event) {
+        }
+    };
 
     public static void main(String[] args) {
         new Main();
@@ -114,26 +123,24 @@ public class Main extends JFrame implements FormDrawer {
         setTitle("VNC Client");
         setSize(1280, 720);
         setLocationRelativeTo(null);
-        setFont(font);
+        setFont(FONT);
 
         createMenu();
         createTable();
 
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        clientMap = new HashMap<>();
     }
 
     //создание меню
     public void createMenu() {
         menu = new JMenu("Меню");
-        menu.setFont(font);
+        menu.setFont(FONT);
         menuBar = new JMenuBar();
 
         JMenuItem connectItem = new JMenuItem("Подключить");
         connectItem.addActionListener(new ItemSelectListener());
-        connectItem.setFont(font);
+        connectItem.setFont(FONT);
         try {
             connectItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\connect.png"))));
         } catch (IOException ioException) {
@@ -143,11 +150,11 @@ public class Main extends JFrame implements FormDrawer {
         menuBar.add(menu);
 
         settingsMenu = new JMenu("Настройки");
-        settingsMenu.setFont(font);
+        settingsMenu.setFont(FONT);
 
         JMenuItem openItem = new JMenuItem("Открыть");
         openItem.addActionListener(new ItemSelectListener());
-        openItem.setFont(font);
+        openItem.setFont(FONT);
         try {
             openItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\upload.png"))));
         } catch (IOException ioException) {
@@ -156,7 +163,7 @@ public class Main extends JFrame implements FormDrawer {
 
         JMenuItem saveItem = new JMenuItem("Сохранить");
         saveItem.addActionListener(new ItemSelectListener());
-        saveItem.setFont(font);
+        saveItem.setFont(FONT);
         try {
             saveItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\save.png"))));
         } catch (IOException ioException) {
@@ -165,7 +172,7 @@ public class Main extends JFrame implements FormDrawer {
 
         JMenuItem newItem = new JMenuItem("Создать");
         newItem.addActionListener(new ItemSelectListener());
-        newItem.setFont(font);
+        newItem.setFont(FONT);
         try {
             newItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\create.png"))));
         } catch (IOException ioException) {
@@ -183,13 +190,8 @@ public class Main extends JFrame implements FormDrawer {
 
     //создание таблицы
     private void createTable() {
-        model = new DefaultTableModel(1, columnLimit) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        table = new JTable(model);
+        table = new JTable();
+        setTableModel();
         table.setDefaultRenderer(Object.class, new ImageRender());
         table.setRowHeight(145);
         table.setShowGrid(false);
@@ -201,26 +203,40 @@ public class Main extends JFrame implements FormDrawer {
         add(scrollPane);
     }
 
+    private void setTableModel() {
+        row = 0;
+        column = 0;
+
+        model = new DefaultTableModel(1, COLUMN_LIMIT) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.setModel(model);
+        clientMap = new HashMap<>();
+    }
+
     //диалог подключения
     private void showConnectDialog() {
         JPanel panel = new JPanel(new GridLayout(3, 0, 0, 5));
 
         JTextField ipField = new JTextField(15);
-        ipField.setFont(font);
+        ipField.setFont(FONT);
         JLabel ipLabel = new JLabel("IP-Адрес");
-        ipLabel.setFont(font);
+        ipLabel.setFont(FONT);
         ipLabel.setLabelFor(ipField);
 
         JTextField portField = new JTextField(8);
-        portField.setFont(font);
+        portField.setFont(FONT);
         JLabel portLabel = new JLabel("Порт");
-        portLabel.setFont(font);
+        portLabel.setFont(FONT);
         portLabel.setLabelFor(portField);
 
         JTextField nameField = new JTextField(15);
-        nameField.setFont(font);
+        nameField.setFont(FONT);
         JLabel nameLabel = new JLabel("Название");
-        nameLabel.setFont(font);
+        nameLabel.setFont(FONT);
         nameLabel.setLabelFor(nameField);
 
         panel.add(ipLabel);
@@ -262,8 +278,16 @@ public class Main extends JFrame implements FormDrawer {
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            File file = new File(String.valueOf(fileChooser.getSelectedFile()));
-            System.out.println(file.getName());
+            file = new File(String.valueOf(fileChooser.getSelectedFile()));
+            String name = file.getName();
+            int pos = name.lastIndexOf(".");
+            for (Client c : clientMap.values()) {
+                c.getClient().stop();
+            }
+
+            setTableModel();
+            connectClientXML(file);
+            setTitle(name.substring(0, pos));
         }
     }
 
@@ -273,7 +297,7 @@ public class Main extends JFrame implements FormDrawer {
         int result = fileChooser.showSaveDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            File file = new File(String.valueOf(fileChooser.getSelectedFile()) + ".xml");
+            File file = new File(fileChooser.getSelectedFile() + ".xml");
             if (!file.exists()) {
                 try {
                     file.createNewFile();
@@ -301,12 +325,12 @@ public class Main extends JFrame implements FormDrawer {
         String pass = "";
         JPanel panel = new JPanel(new GridLayout(2, 0, 0, 5));
         JPasswordField passField = new JPasswordField(15);
-        passField.setFont(font);
+        passField.setFont(FONT);
         passField.addAncestorListener(focusRequester);
         panel.add(passField);
 
         JCheckBox checkBox = new JCheckBox("Показать пароль");
-        checkBox.setFont(font);
+        checkBox.setFont(FONT);
 
         char def = passField.getEchoChar();
         checkBox.addItemListener(new ItemListener() {
@@ -343,7 +367,7 @@ public class Main extends JFrame implements FormDrawer {
         config.setErrorListener(e -> {
             showMessageDialog(this, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
         });
-        config.setScreenUpdateListener(image -> addView(image, rowIndex, colIndex));
+        config.setScreenUpdateListener(image -> setView(image, rowIndex, colIndex));
         config.setBellListener(v -> getDefaultToolkit().beep());
         config.setRemoteClipboardListener(t -> getDefaultToolkit().getSystemClipboard().setContents(
                 new StringSelection(t), null));
@@ -361,7 +385,7 @@ public class Main extends JFrame implements FormDrawer {
             List<Element> clientList = clientElement.getChildren("client");
 
             for (int i = 0; i < clientList.size(); i++) {
-                Element client = (Element) clientList.get(i);
+                Element client = clientList.get(i);
                 String ip = client.getChildText("ip");
                 int port = Integer.parseInt(client.getChildText("port"));
                 password = client.getChildText("password");
@@ -378,18 +402,19 @@ public class Main extends JFrame implements FormDrawer {
 
     //подключение к vnc
     private void connect(String ip, int port, boolean xml) {
-        String host = ip + ":" + port;
+        String key = ip + ":" + port;
         try {
-            if (!clientMap.containsKey(host)) {
-                if (column >= columnLimit) {
+            if (!clientMap.containsKey(key)) {
+                if (column >= COLUMN_LIMIT) {
                     row += 1;
                     column = 0;
-                    model.addRow(objects);
+                    model.addRow(OBJECTS);
                 }
 
-                if (connectVNC(row, column, ip, port, xml) || xml) {
-                    Client client = new Client(row, column, ip, port, password, name);
-                    clientMap.put(host, client);
+                VernacularClient vnc = connectVNC(row, column, ip, port, xml);
+                if (vnc.isRunning() || xml) {
+                    Client client = new Client(row, column, ip, port, password, name, vnc);
+                    clientMap.put(key, client);
                     column++;
 
                     if (!xml) {
@@ -408,7 +433,7 @@ public class Main extends JFrame implements FormDrawer {
     }
 
     //подключение к VNC
-    private boolean connectVNC(int rowIndex, int colIndex, String ip, int port, boolean xml) {
+    private VernacularClient connectVNC(int rowIndex, int colIndex, String ip, int port, boolean xml) {
         VernacularConfig config = createConfig(rowIndex, colIndex, xml);
         VernacularClient vncClient = new VernacularClient(config);
         vncClient.start(ip, port);
@@ -416,17 +441,10 @@ public class Main extends JFrame implements FormDrawer {
         boolean isRunning = vncClient.isRunning();
 
         if (!isRunning && xml) {
-            File pathToFile = new File("not_available.jpg");
-            Image image = null;
-            try {
-                image = ImageIO.read(pathToFile);
-                addView(image, rowIndex, colIndex);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            setView(notAvailable, rowIndex, colIndex);
         }
 
-        return isRunning;
+        return vncClient;
     }
 
     //добавление VNC в файл xml
@@ -461,7 +479,7 @@ public class Main extends JFrame implements FormDrawer {
     }
 
     //изображение vnc
-    public void addView(Image image, int rowIndex, int colIndex) {
+    public void setView(Image image, int rowIndex, int colIndex) {
         table.setValueAt(image, rowIndex, colIndex);
     }
 
@@ -489,23 +507,24 @@ public class Main extends JFrame implements FormDrawer {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            int col = table.columnAtPoint(e.getPoint());
-            int row = table.rowAtPoint(e.getPoint());
+            int colIndex = table.columnAtPoint(e.getPoint());
+            int rowIndex = table.rowAtPoint(e.getPoint());
 
-            Client client = getClient(row, col);
+            Client client = getClient(rowIndex, colIndex);
             if (client != null) {
                 String ip = client.getIp();
                 int port = client.getPort();
                 String pass = client.getPass();
+                String name = client.getNameClient();
 
                 switch (e.getButton()) {
                     case MouseEvent.BUTTON1:
-                        new Viewer(ip, port, pass, client.getNameClient());
+                        new Viewer(ip, port, pass, name);
                         break;
                     case MouseEvent.BUTTON3:
                         JPopupMenu popupMenu = new JPopupMenu();
                         JMenuItem reloadItem = new JMenuItem("Обновить");
-                        reloadItem.setFont(font);
+                        reloadItem.setFont(FONT);
                         try {
                             reloadItem.setIcon(
                                     new ImageIcon(ImageIO.read(new File("icons\\refresh.png"))));
@@ -516,11 +535,30 @@ public class Main extends JFrame implements FormDrawer {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 password = pass;
-                                connectVNC(row, col, ip, port, true);
+                                connectVNC(rowIndex, colIndex, ip, port, true);
                             }
                         });
-                        popupMenu.add(reloadItem);
+                        JMenuItem deleteItem = new JMenuItem("Удалить");
+                        deleteItem.setFont(FONT);
+                        try {
+                            deleteItem.setIcon(
+                                    new ImageIcon(ImageIO.read(new File("icons\\delete.png"))));
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                        deleteItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                String key = ip + ":" + port;
+                                clientMap.get(key).getClient().stop();
+                                clientMap.remove(key);
 
+                                setView(notAvailable, rowIndex, colIndex);
+                            }
+                        });
+
+                        popupMenu.add(reloadItem);
+                        popupMenu.add(deleteItem);
                         popupMenu.show(e.getComponent(), e.getX(), e.getY());
                         break;
                 }
@@ -555,6 +593,11 @@ public class Main extends JFrame implements FormDrawer {
                     showSaveDialog();
                     break;
                 case "Создать":
+                    for (Client c : clientMap.values()) {
+                        c.getClient().stop();
+                    }
+
+                    setTableModel();
                     break;
             }
         }
