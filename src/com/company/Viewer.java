@@ -19,12 +19,11 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Viewer extends JFrame implements FormDrawer {
-    private final String ip;
-    private final int port;
-    private final String password;
-    private final String name;
-
-    private final VernacularClient vnc;
+    private VernacularClient vnc;
+    private String ip;
+    private int port;
+    private String password;
+    private String name;
     private VernacularConfig config;
     private Image img;
 
@@ -114,7 +113,7 @@ public class Viewer extends JFrame implements FormDrawer {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (isClientWork()) {
                     int scroll = e.getWheelRotation();
-                    if (scroll > 0) {
+                    if (scroll < 0) {
                         vnc.scrollUp();
                     } else {
                         vnc.scrollDown();

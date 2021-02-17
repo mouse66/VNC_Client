@@ -1,5 +1,7 @@
 package com.company;
 
+import com.shinyhut.vernacular.client.VernacularClient;
+
 public class Client {
     private int row;
     private int column;
@@ -7,14 +9,17 @@ public class Client {
     private int port;
     private String pass = "";
     private String name;
+    private VernacularClient client;
 
-    public Client(int row, int column, String ip, int port, String pass, String name) {
+    public Client(int row, int column, String ip, int port, String pass, String name,
+                  VernacularClient client) {
         this.row = row;
         this.column = column;
         this.ip = ip;
         this.port = port;
         this.pass = pass;
         this.name = name;
+        this.client = client;
     }
 
     public int getRow() {
@@ -63,6 +68,14 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public VernacularClient getClient() {
+        return client;
+    }
+
+    public void setClient(VernacularClient client) {
+        this.client = client;
     }
 
     public String getNameClient() {
