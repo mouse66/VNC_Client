@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,7 +41,7 @@ public class Main extends JFrame implements FormDrawer {
     DefaultTableModel model;
     FileWriter writer;
     Document document;
-    File file;
+    File file, mainFolder;
 
     private int row = 0;
     private int column = 0;
@@ -67,12 +68,12 @@ public class Main extends JFrame implements FormDrawer {
     Main() {
         File home = FileSystemView.getFileSystemView().getHomeDirectory();
 
-        File folder = new File(home, "VNC Viewer");
-        if (!folder.exists()) {
-            folder.mkdir();
+        mainFolder = new File(home, "VNC Viewer");
+        if (!mainFolder.exists()) {
+            mainFolder.mkdir();
         }
 
-        file = new File(folder, "main.xml");
+        file = new File(mainFolder, "main.xml");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -85,7 +86,7 @@ public class Main extends JFrame implements FormDrawer {
         document = new Document(clientElement);
         createUI();
 
-        connectClientXML();
+        connectClientXML(file);
     }
 
     public static void main(String[] args) {
@@ -171,7 +172,6 @@ public class Main extends JFrame implements FormDrawer {
             ioException.printStackTrace();
         }
 
-
         settingsMenu.add(openItem);
         settingsMenu.add(saveItem);
         settingsMenu.add(newItem);
@@ -256,6 +256,46 @@ public class Main extends JFrame implements FormDrawer {
         }
     }
 
+    //диалог выбора конфигурации
+    private void showOpenDialog() {
+        JFileChooser fileChooser = getFileChooser("Открыть конфигурацию");
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = new File(String.valueOf(fileChooser.getSelectedFile()));
+            System.out.println(file.getName());
+        }
+    }
+
+    //диалог сохранения конфигурации
+    private void showSaveDialog() {
+        JFileChooser fileChooser = getFileChooser("Сохранить конфигурацию");
+        int result = fileChooser.showSaveDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = new File(String.valueOf(fileChooser.getSelectedFile()) + ".xml");
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                    writeXmlToFile(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Конфигурция " + file.getName() + " сохранена");
+        }
+    }
+
+    private JFileChooser getFileChooser(String s) {
+        JFileChooser fileChooser = new JFileChooser(mainFolder);
+        fileChooser.setDialogTitle(s);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Файл .xml", "xml");
+        fileChooser.setFileFilter(filter);
+        return fileChooser;
+    }
+
     //диалог ввода пароля
     private String showPasswordDialog() {
         String pass = "";
@@ -312,10 +352,10 @@ public class Main extends JFrame implements FormDrawer {
     }
 
     //подключение к клиентам
-    public void connectClientXML() {
+    public void connectClientXML(File f) {
         try {
             SAXBuilder builder = new SAXBuilder();
-            document = builder.build(file);
+            document = builder.build(f);
             Element clientElement = document.getRootElement();
 
             List<Element> clientList = clientElement.getChildren("client");
@@ -404,16 +444,20 @@ public class Main extends JFrame implements FormDrawer {
         document.getRootElement().addContent(clientElement);
 
         try {
-            writer = new FileWriter(file, false);
-
-            XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
-            outputter.output(document, System.out);
-
-            outputter.output(document, writer);
-            writer.flush();
+            writeXmlToFile(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void writeXmlToFile(File f) throws IOException {
+        writer = new FileWriter(f, false);
+
+        XMLOutputter output = new XMLOutputter(Format.getPrettyFormat());
+        output.output(document, System.out);
+
+        output.output(document, writer);
+        writer.flush();
     }
 
     //изображение vnc
@@ -505,8 +549,10 @@ public class Main extends JFrame implements FormDrawer {
                     showConnectDialog();
                     break;
                 case "Открыть":
+                    showOpenDialog();
                     break;
                 case "Сохранить":
+                    showSaveDialog();
                     break;
                 case "Создать":
                     break;
