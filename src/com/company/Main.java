@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.Clients.Client;
+import com.company.Clients.ClientConnect;
+import com.company.Inferface.Listners.ImageRender;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import org.jdom2.Document;
@@ -15,18 +18,14 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_16_TRUE;
 import static java.awt.Toolkit.getDefaultToolkit;
@@ -49,9 +48,11 @@ public class Main extends JFrame implements FormDrawer {
     private int column = 0;
     private String password = "";
     private String name = "";
-    private Map<String, Client> clientMap;
+
+    private final ClientConnect clientConnect;
 
     Main() {
+        clientConnect = new ClientConnect();
         File home = FileSystemView.getFileSystemView().getHomeDirectory();
 
         mainFolder = new File(home, "VNC Viewer");
@@ -214,7 +215,8 @@ public class Main extends JFrame implements FormDrawer {
             }
         };
         table.setModel(model);
-        clientMap = new HashMap<>();
+
+        clientConnect.clearMap();
     }
 
     //диалог подключения
@@ -281,9 +283,7 @@ public class Main extends JFrame implements FormDrawer {
             file = new File(String.valueOf(fileChooser.getSelectedFile()));
             String name = file.getName();
             int pos = name.lastIndexOf(".");
-            for (Client c : clientMap.values()) {
-                c.getClient().stop();
-            }
+            clientConnect.stopClients();
 
             setTableModel();
             connectClientXML(file);
@@ -404,7 +404,7 @@ public class Main extends JFrame implements FormDrawer {
     private void connect(String ip, int port, boolean xml) {
         String key = ip + ":" + port;
         try {
-            if (!clientMap.containsKey(key)) {
+            if (!clientConnect.hasClient(key)) {
                 if (column >= COLUMN_LIMIT) {
                     row += 1;
                     column = 0;
@@ -414,7 +414,7 @@ public class Main extends JFrame implements FormDrawer {
                 VernacularClient vnc = connectVNC(row, column, ip, port, xml);
                 if (vnc.isRunning() || xml) {
                     Client client = new Client(row, column, ip, port, password, name, vnc);
-                    clientMap.put(key, client);
+                    clientConnect.addClient(key, client);
                     column++;
 
                     if (!xml) {
@@ -483,17 +483,6 @@ public class Main extends JFrame implements FormDrawer {
         table.setValueAt(image, rowIndex, colIndex);
     }
 
-    private Client getClient(int rowIndex, int colIndex) {
-        Client client = null;
-        for (Client c : clientMap.values()) {
-            if (c.getColumn() == colIndex && c.getRow() == rowIndex) {
-                client = c;
-                break;
-            }
-        }
-        return client;
-    }
-
     //обрабокта нажатий на таблицу
     private class ClickListener implements MouseListener {
         @Override
@@ -510,7 +499,7 @@ public class Main extends JFrame implements FormDrawer {
             int colIndex = table.columnAtPoint(e.getPoint());
             int rowIndex = table.rowAtPoint(e.getPoint());
 
-            Client client = getClient(rowIndex, colIndex);
+            Client client = clientConnect.getClient(rowIndex, colIndex);
             if (client != null) {
                 String ip = client.getIp();
                 int port = client.getPort();
@@ -550,8 +539,8 @@ public class Main extends JFrame implements FormDrawer {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 String key = ip + ":" + port;
-                                clientMap.get(key).getClient().stop();
-                                clientMap.remove(key);
+                                clientConnect.stopClient(key);
+                                clientConnect.removeClient(key);
 
                                 setView(notAvailable, rowIndex, colIndex);
                             }
@@ -593,33 +582,11 @@ public class Main extends JFrame implements FormDrawer {
                     showSaveDialog();
                     break;
                 case "Создать":
-                    for (Client c : clientMap.values()) {
-                        c.getClient().stop();
-                    }
+                    clientConnect.stopClients();
 
                     setTableModel();
                     break;
             }
-        }
-    }
-
-    class ImageRender extends DefaultTableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (value instanceof BufferedImage) {
-                Image image = (BufferedImage) value;
-                ImageIcon icon = new ImageIcon(image.getScaledInstance(
-                        table.getColumnModel().getColumn(column).getWidth(),
-                        table.getRowHeight(), Image.SCALE_AREA_AVERAGING));
-
-                setIcon(icon);
-                setText(null);
-                return this;
-            }
-            return null;
         }
     }
 }

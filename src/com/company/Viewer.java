@@ -19,11 +19,11 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Viewer extends JFrame implements FormDrawer {
-    private VernacularClient vnc;
-    private String ip;
-    private int port;
-    private String password;
-    private String name;
+    private final VernacularClient vnc;
+    private final String ip;
+    private final int port;
+    private final String password;
+    private final String name;
     private VernacularConfig config;
     private Image img;
 

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.Clients;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 
@@ -84,5 +84,9 @@ public class Client {
         } else {
             return ip + ":" + port;
         }
+    }
+
+    public void disconnect() {
+        client.stop();
     }
 }
