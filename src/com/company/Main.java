@@ -9,12 +9,9 @@ import com.company.Inferface.UserInterface;
 import com.company.VNC.VNCConnect;
 import com.shinyhut.vernacular.client.VernacularClient;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -26,18 +23,17 @@ public class Main {
 
     static JTable table;
     static DefaultTableModel model;
-    static Image notAvailable;
     private static JFrame frame;
     private static Font font;
+
     private static int row = 0;
     private static int column = 0;
-    private static Main main;
+
     private static ClientConnect clientConnect = null;
     private static UserInterface userInterface;
     private static Dialogs dialogs;
     private static ClientConfig config;
     private static VNCConnect connect;
-    private final String name = "";
 
     Main() {
         frame = new JFrame();
@@ -48,20 +44,13 @@ public class Main {
         config = new ClientConfig();
         connect = new VNCConnect(frame);
 
-        File file = new File("not_available.jpg");
-        try {
-            notAvailable = ImageIO.read(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         createUI();
 
         connectClientXML();
     }
 
     public static void main(String[] args) {
-        main = new Main();
+        new Main();
     }
 
     public static void clearTable() {

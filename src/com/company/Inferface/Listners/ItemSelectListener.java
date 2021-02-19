@@ -28,9 +28,6 @@ public class ItemSelectListener extends Component implements ActionListener {
                 File file = Dialogs.showOpenDialog();
 
                 if (file != null) {
-                    String name = file.getName();
-                    int pos = name.lastIndexOf(".");
-
                     ClientConfig.setConfig(file);
                     ClientConnect.stopClients();
                     Main.clearTable();
