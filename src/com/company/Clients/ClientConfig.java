@@ -1,0 +1,113 @@
+package com.company.Clients;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClientConfig {
+    private static File mainFolder;
+    private static File config;
+    private static FileWriter writer;
+    private static Document document;
+
+    public ClientConfig() {
+        File home = FileSystemView.getFileSystemView().getHomeDirectory();
+
+        mainFolder = new File(home, "VNC Viewer");
+        if (!mainFolder.exists()) {
+            mainFolder.mkdir();
+        }
+
+        config = new File(mainFolder, "main_config.xml");
+        if (!config.exists()) {
+            try {
+                config.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        createNewConfig();
+    }
+
+    public static void writeXmlToFile(File f) throws IOException {
+        writer = new FileWriter(f, false);
+
+        XMLOutputter output = new XMLOutputter(Format.getPrettyFormat());
+        output.output(document, System.out);
+
+        output.output(document, writer);
+        writer.flush();
+    }
+
+    public void createNewConfig() {
+        Element clientElement = new Element("clients");
+        document = new Document(clientElement);
+    }
+
+    public File getConfig() {
+        return config;
+    }
+
+    public static void setConfig(File file) {
+        config = file;
+    }
+
+    public ArrayList<Client> getListClient() {
+        ArrayList<Client> list = new ArrayList<>();
+
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            document = builder.build(config);
+            Element clientElement = document.getRootElement();
+
+            List<Element> clientList = clientElement.getChildren("client");
+
+            for (int i = 0; i < clientList.size(); i++) {
+                Element client = clientList.get(i);
+                String ip = client.getChildText("ip");
+                int port = Integer.parseInt(client.getChildText("port"));
+                String pass = client.getChildText("password");
+                String name = client.getChildText("name");
+                list.add(new Client(ip, port, pass, name));
+            }
+
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public void addVncToXml(Client client) {
+        Element clientElement = new Element("client");
+        clientElement.addContent(new Element("ip")
+                .addContent(client.getIp()));
+        clientElement.addContent(new Element("port")
+                .addContent(String.valueOf(client.getPort())));
+        clientElement.addContent(new Element("password")
+                .addContent(client.getPass()));
+        clientElement.addContent(new Element("name")
+                .addContent(client.getNameClient()));
+
+        document.getRootElement().addContent(clientElement);
+
+        try {
+            writeXmlToFile(config);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

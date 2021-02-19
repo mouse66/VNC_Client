@@ -22,6 +22,19 @@ public class Client {
         this.client = client;
     }
 
+    public Client(String ip, int port, String name) {
+        this.ip = ip;
+        this.port = port;
+        this.name = name;
+    }
+
+    public Client(String ip, int port, String pass, String name) {
+        this.ip = ip;
+        this.port = port;
+        this.pass = pass;
+        this.name = name;
+    }
+
     public int getRow() {
         return row;
     }

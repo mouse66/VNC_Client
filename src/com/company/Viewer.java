@@ -18,7 +18,7 @@ import static java.lang.Math.min;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class Viewer extends JFrame implements FormDrawer {
+public class Viewer extends JFrame {
     private final VernacularClient vnc;
     private final String ip;
     private final int port;
@@ -43,12 +43,6 @@ public class Viewer extends JFrame implements FormDrawer {
         vnc.start(this.ip, this.port);
     }
 
-    @Override
-    public void createMenu() {
-
-    }
-
-    @Override
     public void createUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
