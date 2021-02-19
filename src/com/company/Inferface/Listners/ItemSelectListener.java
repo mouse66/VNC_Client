@@ -39,6 +39,7 @@ public class ItemSelectListener extends Component implements ActionListener {
                 break;
             case "Создать":
                 ClientConnect.stopClients();
+                ClientConfig.newConfig();
                 Main.clearTable();
                 break;
         }

@@ -5,6 +5,7 @@ import com.company.Clients.ClientConfig;
 import com.company.Clients.ClientConnect;
 import com.company.Inferface.Dialogs;
 import com.company.Inferface.InterfaceParam;
+import com.company.Inferface.Listners.TableClickListener;
 import com.company.Inferface.UserInterface;
 import com.company.VNC.VNCConnect;
 import com.shinyhut.vernacular.client.VernacularClient;
@@ -12,7 +13,6 @@ import com.shinyhut.vernacular.client.VernacularClient;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -62,9 +62,7 @@ public class Main {
 
     //подключение к клиентам
     public static void connectClientXML() {
-        ArrayList<Client> clients = config.getListClient();
-
-        for (Client c : clients) {
+        for (Client c : config.getListClient()) {
             ClientConnect.setPassword(c.getPass());
             connect(c, true);
         }
@@ -89,7 +87,6 @@ public class Main {
                 if (vnc.isRunning() || xml) {
                     Client client = new Client(row, column, clientIp, clientPort,
                             ClientConnect.getPassword(), name, vnc);
-                    ClientConnect.setPassword("");
                     clientConnect.addClient(key, client);
                     column++;
 
@@ -101,6 +98,7 @@ public class Main {
                 showMessageDialog(frame, "Данная машина уже подключена");
                 return;
             }
+            ClientConnect.setPassword("");
         } catch (Exception e) {
             showMessageDialog(frame, "Ошибка при подключении!");
             return;
@@ -139,6 +137,7 @@ public class Main {
     //создание таблицы
     private void createTable() {
         table = userInterface.createTable();
+        table.addMouseListener(new TableClickListener(table));
         clearTable();
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane);

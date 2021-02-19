@@ -4,7 +4,6 @@ import com.company.Clients.Client;
 import com.company.Clients.ClientConnect;
 import com.company.Inferface.Listners.ImageRender;
 import com.company.Inferface.Listners.ItemSelectListener;
-import com.company.Inferface.Listners.TableClickListener;
 import com.company.Main;
 import com.company.VNC.VNCConnect;
 
@@ -136,7 +135,6 @@ public class UserInterface {
     public JTable createTable() {
         JTable table = new JTable();
         table.setModel(createModel());
-        table.addMouseListener(new TableClickListener(table));
         table.setDefaultRenderer(Object.class, new ImageRender());
         table.setRowHeight(145);
         table.setShowGrid(false);

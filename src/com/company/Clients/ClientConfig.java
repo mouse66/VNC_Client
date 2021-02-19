@@ -28,15 +28,6 @@ public class ClientConfig {
             mainFolder.mkdir();
         }
 
-        config = new File(mainFolder, "main_config.xml");
-        if (!config.exists()) {
-            try {
-                config.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         createNewConfig();
     }
 
@@ -50,9 +41,26 @@ public class ClientConfig {
         writer.flush();
     }
 
-    public void createNewConfig() {
+    public static void createNewConfig() {
+        config = new File(mainFolder, "main_config.xml");
+        if (!config.exists()) {
+            try {
+                config.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         Element clientElement = new Element("clients");
         document = new Document(clientElement);
+    }
+
+    public static void newConfig() {
+        config = new File(mainFolder, "main_config.xml");
+        if (config.exists()) {
+            config.delete();
+        }
+        createNewConfig();
     }
 
     public File getConfig() {
