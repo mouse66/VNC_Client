@@ -111,7 +111,7 @@ public class Main {
     }
 
     //создание UI
-    public void createUI() {
+    private void createUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
