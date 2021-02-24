@@ -19,6 +19,7 @@ public class ClientConfig {
     private static File config;
     private static FileWriter writer;
     private static Document document;
+    private static ArrayList<Client> clients;
 
     public ClientConfig() {
         File home = FileSystemView.getFileSystemView().getHomeDirectory();
@@ -53,6 +54,7 @@ public class ClientConfig {
 
         Element clientElement = new Element("clients");
         document = new Document(clientElement);
+        createList();
     }
 
     public static void newConfig() {
@@ -69,10 +71,15 @@ public class ClientConfig {
 
     public static void setConfig(File file) {
         config = file;
+        createList();
     }
 
     public ArrayList<Client> getListClient() {
-        ArrayList<Client> list = new ArrayList<>();
+        return clients;
+    }
+
+    private static void createList() {
+        clients = new ArrayList<>();
 
         try {
             SAXBuilder builder = new SAXBuilder();
@@ -87,7 +94,7 @@ public class ClientConfig {
                 int port = Integer.parseInt(client.getChildText("port"));
                 String pass = client.getChildText("password");
                 String name = client.getChildText("name");
-                list.add(new Client(ip, port, pass, name));
+                clients.add(new Client(ip, port, pass, name));
             }
 
         } catch (JDOMException e) {
@@ -95,8 +102,6 @@ public class ClientConfig {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return list;
     }
 
     public void addVncToXml(Client client) {

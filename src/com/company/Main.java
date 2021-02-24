@@ -13,6 +13,7 @@ import com.shinyhut.vernacular.client.VernacularClient;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -62,8 +63,8 @@ public class Main {
 
     //подключение к клиентам
     public static void connectClientXML() {
-        for (Client c : config.getListClient()) {
-            ClientConnect.setPassword(c.getPass());
+        ArrayList<Client> clients = config.getListClient();
+        for (Client c : clients) {
             connect(c, true);
         }
     }
@@ -75,6 +76,7 @@ public class Main {
         String name = c.getName();
 
         String key = clientIp + ":" + clientPort;
+        ClientConnect.setPassword(c.getPass());
         try {
             if (!clientConnect.hasClient(key)) {
                 if (column >= COLUMN_LIMIT) {
@@ -83,7 +85,7 @@ public class Main {
                     model.addRow(OBJECTS);
                 }
 
-                VernacularClient vnc = VNCConnect.connectVNC(row, column, clientIp, clientPort, xml);
+                VernacularClient vnc = connect.connectVNC(row, column, clientIp, clientPort, xml);
                 if (vnc.isRunning() || xml) {
                     Client client = new Client(row, column, clientIp, clientPort,
                             ClientConnect.getPassword(), name, vnc);
