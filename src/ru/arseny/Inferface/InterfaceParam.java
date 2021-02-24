@@ -1,4 +1,4 @@
-package com.company.Inferface;
+package ru.arseny.Inferface;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

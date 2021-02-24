@@ -1,4 +1,4 @@
-package com.company;
+package ru.arseny;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;

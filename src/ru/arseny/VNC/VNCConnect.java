@@ -1,9 +1,9 @@
-package com.company.VNC;
+package ru.arseny.VNC;
 
-import com.company.Clients.ClientConnect;
-import com.company.Inferface.Dialogs;
-import com.company.Inferface.InterfaceParam;
-import com.company.Main;
+import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Inferface.Dialogs;
+import ru.arseny.Inferface.InterfaceParam;
+import ru.arseny.Main;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 

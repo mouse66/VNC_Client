@@ -1,8 +1,8 @@
-package com.company.Inferface;
+package ru.arseny.Inferface;
 
-import com.company.Clients.Client;
-import com.company.Clients.ClientConfig;
-import com.company.Clients.ClientConnect;
+import ru.arseny.Clients.Client;
+import ru.arseny.Clients.ClientConfig;
+import ru.arseny.Clients.ClientConnect;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;

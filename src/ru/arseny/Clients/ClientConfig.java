@@ -1,4 +1,4 @@
-package com.company.Clients;
+package ru.arseny.Clients;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -65,19 +65,6 @@ public class ClientConfig {
         createNewConfig();
     }
 
-    public File getConfig() {
-        return config;
-    }
-
-    public static void setConfig(File file) {
-        config = file;
-        createList();
-    }
-
-    public ArrayList<Client> getListClient() {
-        return clients;
-    }
-
     private static void createList() {
         clients = new ArrayList<>();
 
@@ -101,6 +88,37 @@ public class ClientConfig {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void setConfig(File file) {
+        config = file;
+        createList();
+    }
+
+    public ArrayList<Client> getListClient() {
+        return clients;
+    }
+
+    public static void removeClient(String ip, int port) {
+        Element clientElement = document.getRootElement();
+
+        List<Element> clientList = clientElement.getChildren("client");
+
+        for (int i = 0; i < clientList.size(); i++) {
+            Element client = clientList.get(i);
+            String ipClient = client.getChildText("ip");
+            int portClient = Integer.parseInt(client.getChildText("port"));
+
+            if (ipClient.equals(ip) && portClient == port) {
+                client.detach();
+                try {
+                    writeXmlToFile(config);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
         }
     }
 

@@ -1,9 +1,9 @@
-package com.company.Inferface.Listners;
+package ru.arseny.Inferface.Listners;
 
-import com.company.Clients.Client;
-import com.company.Clients.ClientConnect;
-import com.company.Inferface.UserInterface;
-import com.company.Viewer;
+import ru.arseny.Clients.Client;
+import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Inferface.UserInterface;
+import ru.arseny.Viewer;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

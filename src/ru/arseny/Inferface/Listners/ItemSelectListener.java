@@ -1,10 +1,10 @@
-package com.company.Inferface.Listners;
+package ru.arseny.Inferface.Listners;
 
-import com.company.Clients.Client;
-import com.company.Clients.ClientConfig;
-import com.company.Clients.ClientConnect;
-import com.company.Inferface.Dialogs;
-import com.company.Main;
+import ru.arseny.Clients.Client;
+import ru.arseny.Clients.ClientConfig;
+import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Inferface.Dialogs;
+import ru.arseny.Main;
 
 import javax.swing.*;
 import java.awt.*;

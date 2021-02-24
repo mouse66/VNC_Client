@@ -1,4 +1,4 @@
-package com.company.Clients;
+package ru.arseny.Clients;
 
 import java.util.HashMap;
 import java.util.Map;

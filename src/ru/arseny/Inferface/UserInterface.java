@@ -1,11 +1,12 @@
-package com.company.Inferface;
+package ru.arseny.Inferface;
 
-import com.company.Clients.Client;
-import com.company.Clients.ClientConnect;
-import com.company.Inferface.Listners.ImageRender;
-import com.company.Inferface.Listners.ItemSelectListener;
-import com.company.Main;
-import com.company.VNC.VNCConnect;
+import ru.arseny.Clients.Client;
+import ru.arseny.Clients.ClientConfig;
+import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Inferface.Listners.ImageRender;
+import ru.arseny.Inferface.Listners.ItemSelectListener;
+import ru.arseny.Main;
+import ru.arseny.VNC.VNCConnect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -49,6 +50,7 @@ public class UserInterface {
             public void actionPerformed(ActionEvent e) {
                 ClientConnect.setPassword(pass);
                 VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
+                ClientConnect.setPassword("");
             }
         });
         JMenuItem deleteItem = new JMenuItem("Удалить");
@@ -65,6 +67,7 @@ public class UserInterface {
                 String key = ip + ":" + port;
                 ClientConnect.stopClient(key);
                 ClientConnect.removeClient(key);
+                ClientConfig.removeClient(ip, port);
 
                 Main.setView(InterfaceParam.getNotAvailable(), rowIndex, colIndex);
             }

@@ -1,4 +1,4 @@
-package com.company.Inferface.Listners;
+package ru.arseny.Inferface.Listners;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

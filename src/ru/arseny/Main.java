@@ -1,13 +1,13 @@
-package com.company;
+package ru.arseny;
 
-import com.company.Clients.Client;
-import com.company.Clients.ClientConfig;
-import com.company.Clients.ClientConnect;
-import com.company.Inferface.Dialogs;
-import com.company.Inferface.InterfaceParam;
-import com.company.Inferface.Listners.TableClickListener;
-import com.company.Inferface.UserInterface;
-import com.company.VNC.VNCConnect;
+import ru.arseny.Clients.Client;
+import ru.arseny.Clients.ClientConfig;
+import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Inferface.Dialogs;
+import ru.arseny.Inferface.InterfaceParam;
+import ru.arseny.Inferface.Listners.TableClickListener;
+import ru.arseny.Inferface.UserInterface;
+import ru.arseny.VNC.VNCConnect;
 import com.shinyhut.vernacular.client.VernacularClient;
 
 import javax.swing.*;
