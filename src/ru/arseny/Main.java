@@ -1,5 +1,6 @@
 package ru.arseny;
 
+import com.shinyhut.vernacular.client.VernacularClient;
 import ru.arseny.Clients.Client;
 import ru.arseny.Clients.ClientConfig;
 import ru.arseny.Clients.ClientConnect;
@@ -8,11 +9,14 @@ import ru.arseny.Inferface.InterfaceParam;
 import ru.arseny.Inferface.Listners.TableClickListener;
 import ru.arseny.Inferface.UserInterface;
 import ru.arseny.VNC.VNCConnect;
-import com.shinyhut.vernacular.client.VernacularClient;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -85,7 +89,7 @@ public class Main {
                     model.addRow(OBJECTS);
                 }
 
-                VernacularClient vnc = connect.connectVNC(row, column, clientIp, clientPort, xml);
+                VernacularClient vnc = VNCConnect.connectVNC(row, column, clientIp, clientPort, xml);
                 if (vnc.isRunning() || xml) {
                     Client client = new Client(row, column, clientIp, clientPort,
                             ClientConnect.getPassword(), name, vnc);
@@ -130,6 +134,12 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setFont(font);
         frame.setJMenuBar(userInterface.createMenu());
+        try {
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
+            frame.setIconImage(image);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
         createTable();
 
         frame.setVisible(true);

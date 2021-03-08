@@ -15,7 +15,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class UserInterface {
@@ -40,8 +41,8 @@ public class UserInterface {
         JMenuItem reloadItem = new JMenuItem("Обновить");
         reloadItem.setFont(font);
         try {
-            reloadItem.setIcon(
-                    new ImageIcon(ImageIO.read(new File("icons\\refresh.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/refresh.png"));
+            reloadItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -56,8 +57,8 @@ public class UserInterface {
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(font);
         try {
-            deleteItem.setIcon(
-                    new ImageIcon(ImageIO.read(new File("icons\\delete.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/delete.png"));
+            deleteItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -89,7 +90,8 @@ public class UserInterface {
         connectItem.addActionListener(listener);
         connectItem.setFont(font);
         try {
-            connectItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\connect.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/connect.png"));
+            connectItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -103,7 +105,8 @@ public class UserInterface {
         openItem.addActionListener(listener);
         openItem.setFont(font);
         try {
-            openItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\upload.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/upload.png"));
+            openItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -112,7 +115,8 @@ public class UserInterface {
         saveItem.addActionListener(listener);
         saveItem.setFont(font);
         try {
-            saveItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\save.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/save.png"));
+            saveItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -121,7 +125,8 @@ public class UserInterface {
         newItem.addActionListener(listener);
         newItem.setFont(font);
         try {
-            newItem.setIcon(new ImageIcon(ImageIO.read(new File("icons\\create.png"))));
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/create.png"));
+            newItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

@@ -3,10 +3,14 @@ package ru.arseny;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_24_TRUE;
 import static java.awt.BorderLayout.CENTER;
@@ -54,6 +58,13 @@ public class Viewer extends JFrame {
             e.printStackTrace();
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
+        }
+
+        try {
+            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
+            setIconImage(image);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
 
         setTitle(name);
