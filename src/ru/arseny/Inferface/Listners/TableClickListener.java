@@ -1,7 +1,7 @@
 package ru.arseny.Inferface.Listners;
 
 import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Clients.ClientConnection;
 import ru.arseny.Inferface.UserInterface;
 import ru.arseny.Viewer;
 
@@ -30,16 +30,11 @@ public class TableClickListener implements MouseListener {
         int colIndex = table.columnAtPoint(e.getPoint());
         int rowIndex = table.rowAtPoint(e.getPoint());
 
-        Client client = ClientConnect.getClient(rowIndex, colIndex);
+        Client client = ClientConnection.getClient(rowIndex, colIndex);
         if (client != null) {
-            String ip = client.getIp();
-            int port = client.getPort();
-            String pass = client.getPass();
-            String name = client.getNameClient();
-
             switch (e.getButton()) {
                 case MouseEvent.BUTTON1:
-                    new Viewer(ip, port, pass, name);
+                    new Viewer(client);
                     break;
                 case MouseEvent.BUTTON3:
                     UserInterface.createPopup(e, colIndex, rowIndex);

@@ -22,7 +22,7 @@ public class ClientConfig {
     private static ArrayList<Client> clients;
 
     public ClientConfig() {
-        File home = FileSystemView.getFileSystemView().getHomeDirectory();
+        File home = FileSystemView.getFileSystemView().getDefaultDirectory();
 
         mainFolder = new File(home, "VNC Viewer");
         if (!mainFolder.exists()) {

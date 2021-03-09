@@ -1,6 +1,6 @@
 package ru.arseny.VNC;
 
-import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Clients.ClientConnection;
 import ru.arseny.Inferface.Dialogs;
 import ru.arseny.Inferface.InterfaceParam;
 import ru.arseny.Main;
@@ -26,7 +26,7 @@ public class VNCConnect {
         VernacularConfig config = new VernacularConfig();
         config.setColorDepth(BPP_16_TRUE);
         if (xml) {
-            config.setPasswordSupplier(ClientConnect::getPassword);
+            config.setPasswordSupplier(ClientConnection::getPassword);
         } else {
             config.setPasswordSupplier(Dialogs::showPasswordDialog);
         }

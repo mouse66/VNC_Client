@@ -2,7 +2,7 @@ package ru.arseny.Inferface.Listners;
 
 import ru.arseny.Clients.Client;
 import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Clients.ClientConnection;
 import ru.arseny.Inferface.Dialogs;
 import ru.arseny.Main;
 
@@ -28,8 +28,8 @@ public class ItemSelectListener extends Component implements ActionListener {
                 File file = Dialogs.showOpenDialog();
 
                 if (file != null) {
+                    ClientConnection.clearMap();
                     ClientConfig.setConfig(file);
-                    ClientConnect.stopClients();
                     Main.clearTable();
                     Main.connectClientXML();
                 }
@@ -38,7 +38,7 @@ public class ItemSelectListener extends Component implements ActionListener {
                 Dialogs.showSaveDialog();
                 break;
             case "Создать":
-                ClientConnect.stopClients();
+                ClientConnection.clearMap();
                 ClientConfig.newConfig();
                 Main.clearTable();
                 break;

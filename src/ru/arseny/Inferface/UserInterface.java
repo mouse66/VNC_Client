@@ -2,7 +2,7 @@ package ru.arseny.Inferface;
 
 import ru.arseny.Clients.Client;
 import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Clients.ClientConnection;
 import ru.arseny.Inferface.Listners.ImageRender;
 import ru.arseny.Inferface.Listners.ItemSelectListener;
 import ru.arseny.Main;
@@ -21,15 +21,13 @@ import java.io.IOException;
 
 public class UserInterface {
     private static Font font;
-    private final Dialogs dialogs;
 
-    public UserInterface(Dialogs dialogs) {
-        this.dialogs = dialogs;
+    public UserInterface() {
         font = InterfaceParam.getFont();
     }
 
     public static void createPopup(MouseEvent e, int colIndex, int rowIndex) {
-        Client client = ClientConnect.getClient(rowIndex, colIndex);
+        Client client = ClientConnection.getClient(rowIndex, colIndex);
         if (client == null) {
             return;
         }
@@ -46,13 +44,10 @@ public class UserInterface {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        reloadItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ClientConnect.setPassword(pass);
-                VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
-                ClientConnect.setPassword("");
-            }
+        reloadItem.addActionListener(listener -> {
+            ClientConnection.setPassword(pass);
+            VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
+            ClientConnection.setPassword("");
         });
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(font);
@@ -62,16 +57,13 @@ public class UserInterface {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        deleteItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String key = ip + ":" + port;
-                ClientConnect.stopClient(key);
-                ClientConnect.removeClient(key);
-                ClientConfig.removeClient(ip, port);
+        deleteItem.addActionListener(listener -> {
+            String key = ip + ":" + port;
+            ClientConnection.stopClient(key);
+            ClientConnection.removeClient(key);
+            ClientConfig.removeClient(ip, port);
 
-                Main.setView(InterfaceParam.getNotAvailable(), rowIndex, colIndex);
-            }
+            Main.setView(InterfaceParam.getNotAvailable(), rowIndex, colIndex);
         });
 
         popupMenu.add(reloadItem);

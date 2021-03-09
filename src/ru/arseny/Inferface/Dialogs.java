@@ -2,7 +2,7 @@ package ru.arseny.Inferface;
 
 import ru.arseny.Clients.Client;
 import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientConnect;
+import ru.arseny.Clients.ClientConnection;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -37,7 +37,7 @@ public class Dialogs {
 
     public Dialogs(JFrame frame) {
         Dialogs.frame = frame;
-        File home = FileSystemView.getFileSystemView().getHomeDirectory();
+        File home = FileSystemView.getFileSystemView().getDefaultDirectory();
         mainFolder = new File(home, "VNC Viewer");
     }
 
@@ -161,15 +161,51 @@ public class Dialogs {
             pass = new String(passField.getPassword());
         }
 
-        ClientConnect.setPassword(pass);
+        ClientConnection.setPassword(pass);
         return pass;
     }
 
     public static JFileChooser getFileChooser(String s) {
         JFileChooser fileChooser = new JFileChooser(new File(mainFolder, "VNC Viewer"));
+        fileChooser = setUpdateUI(fileChooser);
         fileChooser.setDialogTitle(s);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Файл .xml", "xml");
         fileChooser.setFileFilter(filter);
         return fileChooser;
+    }
+
+    private static JFileChooser setUpdateUI(JFileChooser chooser) {
+        UIManager.put("FileChooser.openButtonText", "Открыть");
+        UIManager.put("FileChooser.cancelButtonText", "Отмена");
+        UIManager.put("FileChooser.lookInLabelText", "Смотреть в");
+        UIManager.put("FileChooser.fileNameLabelText", "Имя файла");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Тип файла");
+
+        UIManager.put("FileChooser.saveButtonText", "Сохранить");
+        UIManager.put("FileChooser.saveButtonToolTipText", "Сохранить");
+        UIManager.put("FileChooser.openButtonText", "Открыть");
+        UIManager.put("FileChooser.openButtonToolTipText", "Открыть");
+        UIManager.put("FileChooser.cancelButtonText", "Отмена");
+        UIManager.put("FileChooser.cancelButtonToolTipText", "Отмена");
+
+        UIManager.put("FileChooser.lookInLabelText", "Папка");
+        UIManager.put("FileChooser.saveInLabelText", "Папка");
+        UIManager.put("FileChooser.fileNameLabelText", "Имя файла");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Тип файлов");
+
+        UIManager.put("FileChooser.upFolderToolTipText", "На один уровень вверх");
+        UIManager.put("FileChooser.newFolderToolTipText", "Создание новой папки");
+        UIManager.put("FileChooser.listViewButtonToolTipText", "Список");
+        UIManager.put("FileChooser.detailsViewButtonToolTipText", "Таблица");
+        UIManager.put("FileChooser.fileNameHeaderText", "Имя");
+        UIManager.put("FileChooser.fileSizeHeaderText", "Размер");
+        UIManager.put("FileChooser.fileTypeHeaderText", "Тип");
+        UIManager.put("FileChooser.fileDateHeaderText", "Изменен");
+        UIManager.put("FileChooser.fileAttrHeaderText", "Атрибуты");
+
+        UIManager.put("FileChooser.acceptAllFileFilterText", "Все файлы");
+        chooser.updateUI();
+
+        return chooser;
     }
 }

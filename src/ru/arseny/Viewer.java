@@ -2,6 +2,7 @@ package ru.arseny;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
+import ru.arseny.Clients.Client;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,31 +24,31 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Viewer extends JFrame {
-    private final VernacularClient vnc;
-    private final String ip;
-    private final int port;
-    private final String password;
-    private final String name;
+    private VernacularClient vnc;
+    private String ip;
+    private int port;
+    private String password;
+    private String name;
     private VernacularConfig config;
     private Image img;
 
-    public Viewer(String ip, int port, String pass, String name) {
-        this.ip = ip;
-        this.port = port;
-        this.password = pass;
-        this.name = name;
+    public Viewer(Client client) {
+        ip = client.getIp();
+        port = client.getPort();
+        password = client.getPass();
+        name = client.getNameClient();
 
         createUI();
         createConfig();
         createView();
-        createMouseListner();
+        createMouseListener();
         createKeyboardListener();
 
         vnc = new VernacularClient(config);
-        vnc.start(this.ip, this.port);
+        vnc.start(ip, port);
     }
 
-    public void createUI() {
+    private void createUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
@@ -63,8 +64,8 @@ public class Viewer extends JFrame {
         try {
             BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
             setIconImage(image);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         setTitle(name);
@@ -79,7 +80,7 @@ public class Viewer extends JFrame {
     }
 
     //слушатель движений мышки
-    private void createMouseListner() {
+    private void createMouseListener() {
         //нажатия мышки
         getContentPane().addMouseListener(new MouseAdapter() {
             @Override
@@ -113,16 +114,13 @@ public class Viewer extends JFrame {
         });
 
         //скролл
-        getContentPane().addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (isClientWork()) {
-                    int scroll = e.getWheelRotation();
-                    if (scroll < 0) {
-                        vnc.scrollUp();
-                    } else {
-                        vnc.scrollDown();
-                    }
+        getContentPane().addMouseWheelListener(listener -> {
+            if (isClientWork()) {
+                int scroll = listener.getWheelRotation();
+                if (scroll < 0) {
+                    vnc.scrollUp();
+                } else {
+                    vnc.scrollDown();
                 }
             }
         });

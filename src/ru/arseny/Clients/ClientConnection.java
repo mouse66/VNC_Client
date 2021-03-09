@@ -3,11 +3,11 @@ package ru.arseny.Clients;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClientConnect {
+public class ClientConnection {
     private static Map<String, Client> clientMap;
     private static String passwordCurrent;
 
-    public ClientConnect() {
+    public ClientConnection() {
         clientMap = new HashMap<>();
     }
 
@@ -40,7 +40,7 @@ public class ClientConnect {
 
     public static void stopClients() {
         for (Client c : clientMap.values()) {
-            c.getClient().stop();
+            c.disconnect();
         }
     }
 
@@ -48,7 +48,8 @@ public class ClientConnect {
         getClient(key).disconnect();
     }
 
-    public void clearMap() {
+    public static void clearMap() {
+        stopClients();
         clientMap.clear();
     }
 
