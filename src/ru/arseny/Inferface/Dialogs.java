@@ -143,14 +143,11 @@ public class Dialogs {
         checkBox.setFont(InterfaceParam.getFont());
 
         char def = passField.getEchoChar();
-        checkBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    passField.setEchoChar((char) 0);
-                } else {
-                    passField.setEchoChar(def);
-                }
+        checkBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                passField.setEchoChar((char) 0);
+            } else {
+                passField.setEchoChar(def);
             }
         });
         panel.add(checkBox);
