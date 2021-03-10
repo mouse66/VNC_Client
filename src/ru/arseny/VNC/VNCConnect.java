@@ -1,6 +1,6 @@
 package ru.arseny.VNC;
 
-import ru.arseny.Clients.ClientConnection;
+import ru.arseny.Clients.ClientList;
 import ru.arseny.Inferface.Dialogs;
 import ru.arseny.Inferface.InterfaceParam;
 import ru.arseny.Main;
@@ -14,6 +14,7 @@ import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_16_TRUE;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
+import static ru.arseny.Inferface.InterfaceParam.NOT_AVAILABLE;
 
 public class VNCConnect {
     private static JFrame frame;
@@ -26,7 +27,7 @@ public class VNCConnect {
         VernacularConfig config = new VernacularConfig();
         config.setColorDepth(BPP_16_TRUE);
         if (xml) {
-            config.setPasswordSupplier(ClientConnection::getPassword);
+            config.setPasswordSupplier(ClientList::getPassword);
         } else {
             config.setPasswordSupplier(Dialogs::showPasswordDialog);
         }
@@ -49,7 +50,7 @@ public class VNCConnect {
         boolean isRunning = vncClient.isRunning();
 
         if (!isRunning && xml) {
-            Main.setView(InterfaceParam.getNotAvailable(), rowIndex, colIndex);
+            Main.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }
 
         return vncClient;

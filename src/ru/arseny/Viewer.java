@@ -50,18 +50,6 @@ public class Viewer extends JFrame {
 
     private void createUI() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
-        try {
             BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
             setIconImage(image);
         } catch (IOException e) {
@@ -74,14 +62,12 @@ public class Viewer extends JFrame {
         setVisible(true);
     }
 
-    //если клиент работает
     private boolean isClientWork() {
         return vnc != null && vnc.isRunning();
     }
 
-    //слушатель движений мышки
     private void createMouseListener() {
-        //нажатия мышки
+        //Нажатие мышки
         getContentPane().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -98,7 +84,7 @@ public class Viewer extends JFrame {
             }
         });
 
-        //движения мыши
+        //Движение мышки
         getContentPane().addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -113,7 +99,7 @@ public class Viewer extends JFrame {
             }
         });
 
-        //скролл
+        //Скролл
         getContentPane().addMouseWheelListener(listener -> {
             if (isClientWork()) {
                 int scroll = listener.getWheelRotation();
@@ -126,7 +112,6 @@ public class Viewer extends JFrame {
         });
     }
 
-    //слушатель клавиатуры
     private void createKeyboardListener() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -145,7 +130,6 @@ public class Viewer extends JFrame {
         });
     }
 
-    //создание конфига
     private void createConfig() {
         config = new VernacularConfig();
 
@@ -160,7 +144,6 @@ public class Viewer extends JFrame {
                 new StringSelection(t), null));
     }
 
-    //прорисовка изображения
     private void createView() {
         add(new JPanel() {
             @Override
@@ -176,7 +159,6 @@ public class Viewer extends JFrame {
         }, CENTER);
     }
 
-    //отрисовка
     private void addImage(Image image) {
         if (resizeRequired(image)) {
             resizeWindow(image);
@@ -185,13 +167,11 @@ public class Viewer extends JFrame {
         repaint();
     }
 
-    //изменение размера экрана
     private boolean resizeRequired(Image image) {
         return img == null || img.getWidth(null) != image.getWidth(null) ||
                 img.getHeight(null) != image.getHeight(null);
     }
 
-    //изменить размер изображения под экран
     private void resizeWindow(Image image) {
         int remoteWidth = image.getWidth(null);
         int remoteHeight = image.getHeight(null);

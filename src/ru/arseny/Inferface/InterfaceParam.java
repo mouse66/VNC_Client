@@ -6,23 +6,17 @@ import java.io.File;
 import java.io.IOException;
 
 public class InterfaceParam {
-    private static final Font FONT = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
-    private static final File file = new File("not_available.jpg");
-    private static Image notAvailable;
+    public static final Font FONT = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
+    public static final File file = new File("not_available.jpg");
+    public static Image NOT_AVAILABLE;
+
+    public static final int COLUMN_LIMIT = 6;
 
     static {
         try {
-            notAvailable = ImageIO.read(file);
+            NOT_AVAILABLE = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Font getFont() {
-        return FONT;
-    }
-
-    public static Image getNotAvailable() {
-        return notAvailable;
     }
 }
