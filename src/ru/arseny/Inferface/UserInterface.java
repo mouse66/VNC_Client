@@ -37,6 +37,7 @@ public class UserInterface {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+
         UIManager.put("FileChooser.openButtonText", "Открыть");
         UIManager.put("FileChooser.cancelButtonText", "Отмена");
         UIManager.put("FileChooser.lookInLabelText", "Смотреть в");
