@@ -36,7 +36,7 @@ public class Dialogs {
     private static File mainFolder;
 
     public Dialogs(JFrame frame) {
-        Dialogs.frame = frame;
+        this.frame = frame;
         File home = FileSystemView.getFileSystemView().getDefaultDirectory();
         mainFolder = new File(home, "VNC Viewer");
     }

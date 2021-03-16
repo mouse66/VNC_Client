@@ -5,7 +5,6 @@ import ru.arseny.Clients.Client;
 import ru.arseny.Clients.ClientConfig;
 import ru.arseny.Clients.ClientList;
 import ru.arseny.Inferface.Dialogs;
-import ru.arseny.Inferface.InterfaceParam;
 import ru.arseny.Inferface.Listners.TableClickListener;
 import ru.arseny.Inferface.UserInterface;
 import ru.arseny.VNC.VNCConnect;
@@ -31,7 +30,7 @@ public class Main {
     private static int row = 0;
     private static int column = 0;
 
-    private static ClientList clientList = null;
+    private static ClientList clientList;
     private static UserInterface userInterface;
     private Dialogs dialogs;
     private static ClientConfig config;
@@ -65,8 +64,8 @@ public class Main {
         try {
             BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
             frame.setIconImage(image);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         createTable();
 
