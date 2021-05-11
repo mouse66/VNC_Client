@@ -49,6 +49,9 @@ public class MainView {
         connectClientXML();
     }
 
+    /**
+     * Создание интерфейса
+     */
     public void createUI() {
         userInterface.updateUIManager();
         frame.setTitle("VNC Client");
@@ -68,6 +71,9 @@ public class MainView {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    /**
+     * Создать таблицу
+     */
     public void createTable() {
         table = userInterface.createTable();
         table.addMouseListener(new TableClickListener(table));
@@ -76,6 +82,9 @@ public class MainView {
         frame.add(scrollPane);
     }
 
+    /**
+     * Очистить таблицу
+     */
     public static void clearTable() {
         row = 0;
         column = 0;
@@ -83,6 +92,9 @@ public class MainView {
         ClientList.clearMap();
     }
 
+    /**
+     * Подлючение клиента из конфигурации
+     */
     public static void connectClientXML() {
         ArrayList<Client> clients = config.getListClient();
         for (Client client : clients) {
@@ -90,6 +102,11 @@ public class MainView {
         }
     }
 
+    /**
+     * Подключение клиента
+     * @param client {@link Client}
+     * @param xml true - параметры из конфигурации, false - введены вручную
+     */
     public static void connect(Client client, boolean xml) {
         String clientIp = client.getIp();
         int clientPort = client.getPort();
@@ -126,6 +143,12 @@ public class MainView {
         }
     }
 
+    /**
+     * Добавить картинку в таблицу
+     * @param image картинка
+     * @param rowIndex строка
+     * @param colIndex столбец
+     */
     public static void setView(Image image, int rowIndex, int colIndex) {
         table.setValueAt(image, rowIndex, colIndex);
     }
