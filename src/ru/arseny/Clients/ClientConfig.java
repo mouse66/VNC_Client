@@ -32,6 +32,11 @@ public class ClientConfig {
         createNewConfig();
     }
 
+    /**
+     * Запись xml конфигурации в файл
+     * @param f файл для записи
+     * @throws IOException
+     */
     public static void writeXmlToFile(File f) throws IOException {
         writer = new FileWriter(f, false);
 
@@ -42,6 +47,9 @@ public class ClientConfig {
         writer.flush();
     }
 
+    /**
+     * Создание новой конфигурации
+     */
     public static void createNewConfig() {
         config = new File(mainFolder, "main_config.xml");
         if (!config.exists()) {
@@ -57,6 +65,9 @@ public class ClientConfig {
         createList();
     }
 
+    /**
+     * Удаление конфигурации и создание новой
+     */
     public static void newConfig() {
         config = new File(mainFolder, "main_config.xml");
         if (config.exists()) {
@@ -65,6 +76,9 @@ public class ClientConfig {
         createNewConfig();
     }
 
+    /**
+     * Создание листа с клиентами из конфигурации
+     */
     private static void createList() {
         clients = new ArrayList<>();
 
@@ -75,8 +89,7 @@ public class ClientConfig {
 
             List<Element> clientList = clientElement.getChildren("client");
 
-            for (int i = 0; i < clientList.size(); i++) {
-                Element client = clientList.get(i);
+            for (Element client : clientList) {
                 String ip = client.getChildText("ip");
                 int port = Integer.parseInt(client.getChildText("port"));
                 String pass = client.getChildText("password");
@@ -84,29 +97,39 @@ public class ClientConfig {
                 clients.add(new Client(ip, port, pass, name));
             }
 
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JDOMException | IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Установить текущую конфигурацию
+     * @param file файл конфигурации
+     */
     public static void setConfig(File file) {
         config = file;
         createList();
     }
 
+    /**
+     *
+     * @return лист клиентов
+     */
     public ArrayList<Client> getListClient() {
         return clients;
     }
 
+    /**
+     * Удалить клиента
+     * @param ip вирт. машины
+     * @param port вирт. машины
+     */
     public static void removeClient(String ip, int port) {
         Element clientElement = document.getRootElement();
 
         List<Element> clientList = clientElement.getChildren("client");
 
-        for (int i = 0; i < clientList.size(); i++) {
-            Element client = clientList.get(i);
+        for (Element client : clientList) {
             String ipClient = client.getChildText("ip");
             int portClient = Integer.parseInt(client.getChildText("port"));
 
@@ -122,6 +145,10 @@ public class ClientConfig {
         }
     }
 
+    /**
+     * Добавить клиента в конфигурацию
+     * @param client класс клиента
+     */
     public void addVncToXml(Client client) {
         Element clientElement = new Element("client");
         clientElement.addContent(new Element("ip")

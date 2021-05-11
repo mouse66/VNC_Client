@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class InterfaceParam {
     public static final Font FONT = new Font("Segoe UI", Font.TRUETYPE_FONT, 12);
-    public static final File file = new File("not_available.jpg");
+    public static final File file = new File("icons/not_available.jpg");
     public static Image NOT_AVAILABLE;
 
     public static final int COLUMN_LIMIT = 6;

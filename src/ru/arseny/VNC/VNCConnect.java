@@ -6,6 +6,7 @@ import ru.arseny.Inferface.InterfaceParam;
 import ru.arseny.Main;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
+import ru.arseny.MainView;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
@@ -20,9 +21,16 @@ public class VNCConnect {
     private static JFrame frame;
 
     public VNCConnect(JFrame frame) {
-        VNCConnect.frame = frame;
+        this.frame = frame;
     }
 
+    /**
+     * Создание конфигурации вирт. машины
+     * @param rowIndex строка
+     * @param colIndex столбец
+     * @param xml true - параметры из конфигурации, false - параметры введены вручную
+     * @return VernacularConfig
+     */
     public static VernacularConfig createConfig(int rowIndex, int colIndex, boolean xml) {
         VernacularConfig config = new VernacularConfig();
         config.setColorDepth(BPP_16_TRUE);
@@ -34,7 +42,7 @@ public class VNCConnect {
         config.setErrorListener(e -> {
             showMessageDialog(frame, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
         });
-        config.setScreenUpdateListener(image -> Main.setView(image, rowIndex, colIndex));
+        config.setScreenUpdateListener(image -> MainView.setView(image, rowIndex, colIndex));
         config.setBellListener(v -> getDefaultToolkit().beep());
         config.setRemoteClipboardListener(t -> getDefaultToolkit().getSystemClipboard().setContents(
                 new StringSelection(t), null));
@@ -42,6 +50,15 @@ public class VNCConnect {
         return config;
     }
 
+    /**
+     * Подкючение к вирт. машине
+     * @param rowIndex строка
+     * @param colIndex столбец
+     * @param ip IP-адрес вирт. машины
+     * @param port порт виртуальной машины
+     * @param xml true - параметры из конфигурации, false - параметры введены вручную
+     * @return VernacularClient
+     */
     public static VernacularClient connectVNC(int rowIndex, int colIndex, String ip, int port, boolean xml) {
         VernacularConfig config = createConfig(rowIndex, colIndex, xml);
         VernacularClient vncClient = new VernacularClient(config);
@@ -50,7 +67,7 @@ public class VNCConnect {
         boolean isRunning = vncClient.isRunning();
 
         if (!isRunning && xml) {
-            Main.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }
 
         return vncClient;

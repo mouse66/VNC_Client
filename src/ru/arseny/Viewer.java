@@ -7,6 +7,7 @@ import ru.arseny.Clients.Client;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -19,7 +20,9 @@ import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import static java.awt.RenderingHints.KEY_INTERPOLATION;
 import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 import static java.awt.Toolkit.getDefaultToolkit;
+import static java.awt.datatransfer.DataFlavor.stringFlavor;
 import static java.lang.Math.min;
+import static java.lang.Thread.sleep;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -31,6 +34,8 @@ public class Viewer extends JFrame {
     private String name;
     private VernacularConfig config;
     private Image img;
+
+    private volatile boolean shutdown = false;
 
     public Viewer(Client client) {
         ip = client.getIp();
@@ -48,9 +53,12 @@ public class Viewer extends JFrame {
         vnc.start(ip, port);
     }
 
+    /**
+     * Создание интерфейса
+     */
     private void createUI() {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/main_icon.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/main_icon.png"));
             setIconImage(image);
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,14 +68,21 @@ public class Viewer extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
+        setFocusable(true);
     }
 
+    /**
+     * Работа клиента в данный момент
+     * @return true - активен, false - нет
+     */
     private boolean isClientWork() {
         return vnc != null && vnc.isRunning();
     }
 
+    /**
+     * Обработка нажатий мыши
+     */
     private void createMouseListener() {
-        //Нажатие мышки
         getContentPane().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -84,7 +99,6 @@ public class Viewer extends JFrame {
             }
         });
 
-        //Движение мышки
         getContentPane().addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -99,7 +113,6 @@ public class Viewer extends JFrame {
             }
         });
 
-        //Скролл
         getContentPane().addMouseWheelListener(listener -> {
             if (isClientWork()) {
                 int scroll = listener.getWheelRotation();
@@ -112,6 +125,9 @@ public class Viewer extends JFrame {
         });
     }
 
+    /**
+     * Обработчик клавиатуры
+     */
     private void createKeyboardListener() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -130,6 +146,9 @@ public class Viewer extends JFrame {
         });
     }
 
+    /**
+     * Создание конфигурации подключения
+     */
     private void createConfig() {
         config = new VernacularConfig();
 
@@ -144,6 +163,9 @@ public class Viewer extends JFrame {
                 new StringSelection(t), null));
     }
 
+    /**
+     * Отрисовка изображения
+     */
     private void createView() {
         add(new JPanel() {
             @Override
@@ -172,6 +194,10 @@ public class Viewer extends JFrame {
                 img.getHeight(null) != image.getHeight(null);
     }
 
+    /**
+     * Перемасшатбирование изображения
+     * @param image текущее изображение
+     */
     private void resizeWindow(Image image) {
         int remoteWidth = image.getWidth(null);
         int remoteHeight = image.getHeight(null);
@@ -191,6 +217,11 @@ public class Viewer extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Размер экрана
+     * @param width ширина
+     * @param height высота
+     */
     private void setWindowSize(int width, int height) {
         getContentPane().setPreferredSize(new Dimension(width, height));
         pack();

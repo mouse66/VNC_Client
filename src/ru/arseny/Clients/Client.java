@@ -11,6 +11,16 @@ public class Client {
     private String name;
     private VernacularClient client;
 
+    /**
+     * Класс клиента
+     * @param row строка
+     * @param column столбец
+     * @param ip IP-адресс машины
+     * @param port порт машины
+     * @param pass пароль
+     * @param name название
+     * @param client объект класса {@link VernacularClient}
+     */
     public Client(int row, int column, String ip, int port, String pass, String name,
                   VernacularClient client) {
         this.row = row;

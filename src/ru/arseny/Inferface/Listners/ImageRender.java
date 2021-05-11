@@ -6,6 +6,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageRender extends DefaultTableCellRenderer {
+    /**
+     * Отрисовка изображения в таблице
+     * @param table таблица
+     * @param value значение в виде картинки
+     * @param isSelected
+     * @param hasFocus
+     * @param row строка
+     * @param column столбец
+     * @return
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus,

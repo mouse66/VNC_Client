@@ -25,6 +25,10 @@ public class TableClickListener implements MouseListener {
 
     }
 
+    /**
+     * Нажатия на таблицу по активным вирт. машинам
+     * @param e
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         int colIndex = table.columnAtPoint(e.getPoint());

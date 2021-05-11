@@ -35,12 +35,20 @@ public class Dialogs {
     private static JFrame frame;
     private static File mainFolder;
 
+    /**
+     * Класс диалогов
+     * @param frame главное окно
+     */
     public Dialogs(JFrame frame) {
         this.frame = frame;
         File home = FileSystemView.getFileSystemView().getDefaultDirectory();
         mainFolder = new File(home, "VNC Viewer");
     }
 
+    /**
+     * Диалог подключения к виртуальной машине
+     * @return {@link Client}
+     */
     public static Client showConnectDialog() {
         Client client = null;
 
@@ -99,6 +107,10 @@ public class Dialogs {
         return client;
     }
 
+    /**
+     * Диалог выбора конфигурации
+     * @return файл конфигурации
+     */
     public static File showOpenDialog() {
         JFileChooser fileChooser = getFileChooser("Открыть конфигурацию");
 
@@ -111,6 +123,9 @@ public class Dialogs {
         return null;
     }
 
+    /**
+     * Диалог сохранения конфигурации
+     */
     public static void showSaveDialog() {
         JFileChooser fileChooser = getFileChooser("Сохранить конфигурацию");
         int result = fileChooser.showSaveDialog(frame);
@@ -131,6 +146,10 @@ public class Dialogs {
         }
     }
 
+    /**
+     * Диалог ввода пароля
+     * @return пароль
+     */
     public static String showPasswordDialog() {
         String pass = "";
         JPanel panel = new JPanel(new GridLayout(2, 0, 0, 5));
@@ -162,6 +181,11 @@ public class Dialogs {
         return pass;
     }
 
+    /**
+     * Заготовка диалога с выбором файла
+     * @param s заголовок диалога
+     * @return JFileChooser
+     */
     public static JFileChooser getFileChooser(String s) {
         JFileChooser fileChooser = new JFileChooser(new File(mainFolder, "VNC Viewer"));
         fileChooser.setDialogTitle(s);

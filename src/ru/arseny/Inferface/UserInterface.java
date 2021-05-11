@@ -6,6 +6,7 @@ import ru.arseny.Clients.ClientList;
 import ru.arseny.Inferface.Listners.ImageRender;
 import ru.arseny.Inferface.Listners.ItemSelectListener;
 import ru.arseny.Main;
+import ru.arseny.MainView;
 import ru.arseny.VNC.VNCConnect;
 
 import javax.imageio.ImageIO;
@@ -22,9 +23,11 @@ import static ru.arseny.Inferface.InterfaceParam.NOT_AVAILABLE;
 
 public class UserInterface {
     public UserInterface() {
-
     }
 
+    /**
+     * Изменение темы и перевод строк
+     */
     public void updateUIManager() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -69,6 +72,12 @@ public class UserInterface {
         UIManager.put("FileChooser.acceptAllFileFilterText", "Все файлы");
     }
 
+    /**
+     * Создание pop-up меню при нажатии на активную виртуальную машину
+     * @param e MouseEvent
+     * @param colIndex активаный столбец
+     * @param rowIndex активная строка
+     */
     public static void createPopup(MouseEvent e, int colIndex, int rowIndex) {
         Client client = ClientList.getClient(rowIndex, colIndex);
         if (client == null) {
@@ -82,7 +91,7 @@ public class UserInterface {
         JMenuItem reloadItem = new JMenuItem("Обновить");
         reloadItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/refresh.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/refresh.png"));
             reloadItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -95,7 +104,7 @@ public class UserInterface {
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/delete.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/delete.png"));
             deleteItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -106,7 +115,7 @@ public class UserInterface {
             ClientList.removeClient(key);
             ClientConfig.removeClient(ip, port);
 
-            Main.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
         });
 
         popupMenu.add(reloadItem);
@@ -114,6 +123,10 @@ public class UserInterface {
         popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
+    /**
+     * Создание главного меню
+     * @return JMenuBar
+     */
     public JMenuBar createMenu() {
         ItemSelectListener listener = new ItemSelectListener();
 
@@ -125,7 +138,7 @@ public class UserInterface {
         connectItem.addActionListener(listener);
         connectItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/connect.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/connect.png"));
             connectItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -140,7 +153,7 @@ public class UserInterface {
         openItem.addActionListener(listener);
         openItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/upload.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/upload.png"));
             openItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -150,7 +163,7 @@ public class UserInterface {
         saveItem.addActionListener(listener);
         saveItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/save.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/save.png"));
             saveItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -160,7 +173,7 @@ public class UserInterface {
         newItem.addActionListener(listener);
         newItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("src/icons/create.png"));
+            BufferedImage image = ImageIO.read(new FileInputStream("icons/create.png"));
             newItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -175,6 +188,10 @@ public class UserInterface {
         return menuBar;
     }
 
+    /**
+     * Создание таблицы
+     * @return JTable
+     */
     public JTable createTable() {
         JTable table = new JTable();
         table.setModel(createModel());
@@ -187,6 +204,10 @@ public class UserInterface {
         return table;
     }
 
+    /**
+     * Создание модели таблицы
+     * @return DefaultTableModel
+     */
     public DefaultTableModel createModel() {
         DefaultTableModel model = new DefaultTableModel(1,
                 InterfaceParam.COLUMN_LIMIT) {

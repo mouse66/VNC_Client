@@ -5,6 +5,7 @@ import ru.arseny.Clients.ClientConfig;
 import ru.arseny.Clients.ClientList;
 import ru.arseny.Inferface.Dialogs;
 import ru.arseny.Main;
+import ru.arseny.MainView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class ItemSelectListener extends Component implements ActionListener {
+    /**
+     * Обработка нажатий в главном меню
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem item = (JMenuItem) e.getSource();
@@ -21,7 +26,7 @@ public class ItemSelectListener extends Component implements ActionListener {
             case "Подключить":
                 Client client = Dialogs.showConnectDialog();
                 if (client != null) {
-                    Main.connect(client, false);
+                    MainView.connect(client, false);
                 }
                 break;
             case "Открыть":
@@ -30,8 +35,8 @@ public class ItemSelectListener extends Component implements ActionListener {
                 if (file != null) {
                     ClientList.clearMap();
                     ClientConfig.setConfig(file);
-                    Main.clearTable();
-                    Main.connectClientXML();
+                    MainView.clearTable();
+                    MainView.connectClientXML();
                 }
                 break;
             case "Сохранить":
@@ -40,7 +45,7 @@ public class ItemSelectListener extends Component implements ActionListener {
             case "Создать":
                 ClientList.clearMap();
                 ClientConfig.newConfig();
-                Main.clearTable();
+                MainView.clearTable();
                 break;
         }
     }
