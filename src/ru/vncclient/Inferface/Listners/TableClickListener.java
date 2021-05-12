@@ -1,9 +1,9 @@
-package ru.arseny.Inferface.Listners;
+package ru.vncclient.Inferface.Listners;
 
-import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientList;
-import ru.arseny.Inferface.UserInterface;
-import ru.arseny.Viewer;
+import ru.vncclient.Clients.Client;
+import ru.vncclient.Clients.ClientList;
+import ru.vncclient.Inferface.UserInterface;
+import ru.vncclient.Viewer;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

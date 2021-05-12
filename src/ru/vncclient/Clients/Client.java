@@ -1,4 +1,4 @@
-package ru.arseny.Clients;
+package ru.vncclient.Clients;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 
@@ -19,7 +19,7 @@ public class Client {
      * @param port порт машины
      * @param pass пароль
      * @param name название
-     * @param client объект класса {@link VernacularClient}
+     * @param client объект класса VernacularClient
      */
     public Client(int row, int column, String ip, int port, String pass, String name,
                   VernacularClient client) {

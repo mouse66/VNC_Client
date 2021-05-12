@@ -1,21 +1,19 @@
-package ru.arseny.VNC;
+package ru.vncclient.VNC;
 
-import ru.arseny.Clients.ClientList;
-import ru.arseny.Inferface.Dialogs;
-import ru.arseny.Inferface.InterfaceParam;
-import ru.arseny.Main;
+import ru.vncclient.Clients.ClientList;
+import ru.vncclient.Inferface.Dialogs;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
-import ru.arseny.MainView;
+import ru.vncclient.MainView;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
 
-import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_16_TRUE;
+import static com.shinyhut.vernacular.client.rendering.ColorDepth.*;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static ru.arseny.Inferface.InterfaceParam.NOT_AVAILABLE;
+import static ru.vncclient.Inferface.InterfaceParam.NOT_AVAILABLE;
 
 public class VNCConnect {
     private static JFrame frame;
@@ -42,10 +40,14 @@ public class VNCConnect {
         config.setErrorListener(e -> {
             showMessageDialog(frame, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
         });
-        config.setScreenUpdateListener(image -> MainView.setView(image, rowIndex, colIndex));
-        config.setBellListener(v -> getDefaultToolkit().beep());
-        config.setRemoteClipboardListener(t -> getDefaultToolkit().getSystemClipboard().setContents(
-                new StringSelection(t), null));
+        config.setScreenUpdateListener(image ->
+                MainView.setView(image, rowIndex, colIndex));
+        config.setBellListener(v ->
+                getDefaultToolkit().beep());
+        config.setRemoteClipboardListener(t ->
+                getDefaultToolkit()
+                        .getSystemClipboard()
+                        .setContents(new StringSelection(t), null));
 
         return config;
     }

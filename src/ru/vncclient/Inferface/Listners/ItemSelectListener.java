@@ -1,11 +1,10 @@
-package ru.arseny.Inferface.Listners;
+package ru.vncclient.Inferface.Listners;
 
-import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientList;
-import ru.arseny.Inferface.Dialogs;
-import ru.arseny.Main;
-import ru.arseny.MainView;
+import ru.vncclient.Clients.Client;
+import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientList;
+import ru.vncclient.Inferface.Dialogs;
+import ru.vncclient.MainView;
 
 import javax.swing.*;
 import java.awt.*;

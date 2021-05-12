@@ -1,4 +1,4 @@
-package ru.arseny.Inferface.Listners;
+package ru.vncclient.Inferface.Listners;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

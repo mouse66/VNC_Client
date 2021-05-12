@@ -1,27 +1,26 @@
-package ru.arseny;
+package ru.vncclient;
 
 import com.shinyhut.vernacular.client.VernacularClient;
-import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientList;
-import ru.arseny.Inferface.Dialogs;
-import ru.arseny.Inferface.Listners.TableClickListener;
-import ru.arseny.Inferface.UserInterface;
-import ru.arseny.VNC.VNCConnect;
+import ru.vncclient.Clients.Client;
+import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientList;
+import ru.vncclient.Inferface.Dialogs;
+import ru.vncclient.Inferface.Listners.TableClickListener;
+import ru.vncclient.Inferface.UserInterface;
+import ru.vncclient.VNC.VNCConnect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static ru.arseny.Inferface.InterfaceParam.COLUMN_LIMIT;
-import static ru.arseny.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.Inferface.InterfaceParam.COLUMN_LIMIT;
+import static ru.vncclient.Inferface.InterfaceParam.FONT;
 
 public class MainView {
     static JTable table;
@@ -60,7 +59,8 @@ public class MainView {
         frame.setFont(FONT);
         frame.setJMenuBar(userInterface.createMenu());
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/main_icon.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/main_icon.png"));
             frame.setIconImage(image);
         } catch (IOException e) {
             e.printStackTrace();

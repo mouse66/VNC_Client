@@ -1,8 +1,8 @@
-package ru.arseny.Inferface;
+package ru.vncclient.Inferface;
 
-import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientList;
+import ru.vncclient.Clients.Client;
+import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientList;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static javax.swing.JOptionPane.*;
-import static ru.arseny.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.Inferface.InterfaceParam.FONT;
 
 public class Dialogs {
     private static final AncestorListener focusRequester = new AncestorListener() {
@@ -88,6 +88,7 @@ public class Dialogs {
                 showMessageDialog(frame, "Некорректный IP-Адрес!");
                 return null;
             }
+
             int port;
             try {
                 port = Integer.parseInt(portField.getText());

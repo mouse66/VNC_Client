@@ -1,25 +1,23 @@
-package ru.arseny.Inferface;
+package ru.vncclient.Inferface;
 
-import ru.arseny.Clients.Client;
-import ru.arseny.Clients.ClientConfig;
-import ru.arseny.Clients.ClientList;
-import ru.arseny.Inferface.Listners.ImageRender;
-import ru.arseny.Inferface.Listners.ItemSelectListener;
-import ru.arseny.Main;
-import ru.arseny.MainView;
-import ru.arseny.VNC.VNCConnect;
+import ru.vncclient.Clients.Client;
+import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientList;
+import ru.vncclient.Inferface.Listners.ImageRender;
+import ru.vncclient.Inferface.Listners.ItemSelectListener;
+import ru.vncclient.Main;
+import ru.vncclient.MainView;
+import ru.vncclient.VNC.VNCConnect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 
-import static ru.arseny.Inferface.InterfaceParam.FONT;
-import static ru.arseny.Inferface.InterfaceParam.NOT_AVAILABLE;
+import static ru.vncclient.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.Inferface.InterfaceParam.NOT_AVAILABLE;
 
 public class UserInterface {
     public UserInterface() {
@@ -91,7 +89,8 @@ public class UserInterface {
         JMenuItem reloadItem = new JMenuItem("Обновить");
         reloadItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/refresh.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/refresh.png"));
             reloadItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -101,10 +100,12 @@ public class UserInterface {
             VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
             ClientList.setPassword("");
         });
+
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/delete.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/delete.png"));
             deleteItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -138,7 +139,8 @@ public class UserInterface {
         connectItem.addActionListener(listener);
         connectItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/connect.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/connect.png"));
             connectItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -153,7 +155,8 @@ public class UserInterface {
         openItem.addActionListener(listener);
         openItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/upload.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/upload.png"));
             openItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -163,7 +166,8 @@ public class UserInterface {
         saveItem.addActionListener(listener);
         saveItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/save.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/save.png"));
             saveItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -173,7 +177,8 @@ public class UserInterface {
         newItem.addActionListener(listener);
         newItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/create.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/create.png"));
             newItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();

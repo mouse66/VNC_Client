@@ -1,4 +1,4 @@
-package ru.arseny.Clients;
+package ru.vncclient.Clients;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +71,8 @@ public class ClientList {
      * @param key
      */
     public static void stopClient(String key) {
-        getClient(key).disconnect();
+        Client c = getClient(key);
+        if (c != null) c.disconnect();
     }
 
     /**

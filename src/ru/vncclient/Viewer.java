@@ -1,17 +1,15 @@
-package ru.arseny;
+package ru.vncclient;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
-import ru.arseny.Clients.Client;
+import ru.vncclient.Clients.Client;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_24_TRUE;
@@ -20,7 +18,6 @@ import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import static java.awt.RenderingHints.KEY_INTERPOLATION;
 import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 import static java.awt.Toolkit.getDefaultToolkit;
-import static java.awt.datatransfer.DataFlavor.stringFlavor;
 import static java.lang.Math.min;
 import static java.lang.Thread.sleep;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
@@ -58,7 +55,8 @@ public class Viewer extends JFrame {
      */
     private void createUI() {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("icons/main_icon.png"));
+            BufferedImage image = ImageIO.read(Main.class.
+                    getClassLoader().getResourceAsStream("icons/main_icon.png"));
             setIconImage(image);
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,6 +127,7 @@ public class Viewer extends JFrame {
      * Обработчик клавиатуры
      */
     private void createKeyboardListener() {
+        setFocusTraversalKeysEnabled(false);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

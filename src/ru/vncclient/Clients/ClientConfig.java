@@ -1,4 +1,4 @@
-package ru.arseny.Clients;
+package ru.vncclient.Clients;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
