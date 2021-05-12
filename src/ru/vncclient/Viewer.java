@@ -22,6 +22,7 @@ import static java.lang.Math.min;
 import static java.lang.Thread.sleep;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
+import static ru.vncclient.Inferface.InterfaceParam.FONT;
 
 public class Viewer extends JFrame {
     private VernacularClient vnc;
@@ -54,19 +55,42 @@ public class Viewer extends JFrame {
      * Создание интерфейса
      */
     private void createUI() {
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/main_icon.png"));
-            setIconImage(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         setTitle(name);
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
         setFocusable(true);
+        createMenu();
+    }
+
+    /**
+     * Создание меню управление виртуальной машиной
+     */
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Управление");
+        menu.setFont(FONT);
+
+        JMenuItem reloadMenu = new JMenuItem("Ctrl + Alt + Del");
+        reloadMenu.addActionListener(listener -> {
+            try {
+                Robot robot = new Robot();
+                robot.keyPress(KeyEvent.VK_CONTROL);
+                robot.keyPress(KeyEvent.VK_ALT);
+                robot.keyPress(KeyEvent.VK_DELETE);
+
+                robot.keyRelease(KeyEvent.VK_CONTROL);
+                robot.keyRelease(KeyEvent.VK_ALT);
+                robot.keyRelease(KeyEvent.VK_DELETE);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        });
+        menu.add(reloadMenu);
+        menuBar.add(menu);
+
+        setJMenuBar(menuBar);
     }
 
     /**

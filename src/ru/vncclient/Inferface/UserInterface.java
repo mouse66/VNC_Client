@@ -5,7 +5,6 @@ import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Listners.ImageRender;
 import ru.vncclient.Inferface.Listners.ItemSelectListener;
-import ru.vncclient.Main;
 import ru.vncclient.MainView;
 import ru.vncclient.VNC.VNCConnect;
 
@@ -89,8 +88,7 @@ public class UserInterface {
         JMenuItem reloadItem = new JMenuItem("Обновить");
         reloadItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/refresh.png"));
+            BufferedImage image = ImageIO.read(UserInterface.class.getResourceAsStream("/resources/refresh.png"));
             reloadItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -104,8 +102,7 @@ public class UserInterface {
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(FONT);
         try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/delete.png"));
+            BufferedImage image = ImageIO.read(UserInterface.class.getResourceAsStream("resources/delete.png"));
             deleteItem.setIcon(new ImageIcon(image));
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -138,13 +135,8 @@ public class UserInterface {
         JMenuItem connectItem = new JMenuItem("Подключить");
         connectItem.addActionListener(listener);
         connectItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/connect.png"));
-            connectItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        connectItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/connect.png")));
+
         menu.add(connectItem);
         menuBar.add(menu);
 
@@ -154,35 +146,17 @@ public class UserInterface {
         JMenuItem openItem = new JMenuItem("Открыть");
         openItem.addActionListener(listener);
         openItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/upload.png"));
-            openItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        openItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/upload.png")));
 
         JMenuItem saveItem = new JMenuItem("Сохранить");
         saveItem.addActionListener(listener);
         saveItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/save.png"));
-            saveItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        saveItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/save.png")));
 
         JMenuItem newItem = new JMenuItem("Создать");
         newItem.addActionListener(listener);
         newItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/create.png"));
-            newItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        newItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/create.png")));
 
         settingsMenu.add(openItem);
         settingsMenu.add(saveItem);

@@ -5,6 +5,7 @@ import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Dialogs;
+import ru.vncclient.Inferface.ImageLoader;
 import ru.vncclient.Inferface.Listners.TableClickListener;
 import ru.vncclient.Inferface.UserInterface;
 import ru.vncclient.VNC.VNCConnect;
@@ -57,14 +58,8 @@ public class MainView {
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setFont(FONT);
+        frame.setIconImage(ImageLoader.getImage("resources/main_icon.png"));
         frame.setJMenuBar(userInterface.createMenu());
-        try {
-            BufferedImage image = ImageIO.read(Main.class.
-                    getClassLoader().getResourceAsStream("icons/main_icon.png"));
-            frame.setIconImage(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         createTable();
 
         frame.setVisible(true);
