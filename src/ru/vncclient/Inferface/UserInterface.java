@@ -8,12 +8,9 @@ import ru.vncclient.Inferface.Listners.ItemSelectListener;
 import ru.vncclient.MainView;
 import ru.vncclient.VNC.VNCConnect;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static ru.vncclient.Inferface.InterfaceParam.FONT;
 import static ru.vncclient.Inferface.InterfaceParam.NOT_AVAILABLE;
@@ -87,12 +84,7 @@ public class UserInterface {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem reloadItem = new JMenuItem("Обновить");
         reloadItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(UserInterface.class.getResourceAsStream("/resources/refresh.png"));
-            reloadItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        reloadItem.setIcon(new ImageIcon(ImageLoader.getImage("refresh.png")));
         reloadItem.addActionListener(listener -> {
             ClientList.setPassword(pass);
             VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
@@ -101,12 +93,8 @@ public class UserInterface {
 
         JMenuItem deleteItem = new JMenuItem("Удалить");
         deleteItem.setFont(FONT);
-        try {
-            BufferedImage image = ImageIO.read(UserInterface.class.getResourceAsStream("resources/delete.png"));
-            deleteItem.setIcon(new ImageIcon(image));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
+        deleteItem.setIcon(new ImageIcon(ImageLoader.getImage("delete.png")));
+
         deleteItem.addActionListener(listener -> {
             String key = ip + ":" + port;
             ClientList.stopClient(key);
@@ -135,7 +123,7 @@ public class UserInterface {
         JMenuItem connectItem = new JMenuItem("Подключить");
         connectItem.addActionListener(listener);
         connectItem.setFont(FONT);
-        connectItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/connect.png")));
+        connectItem.setIcon(new ImageIcon(ImageLoader.getImage("connect.png")));
 
         menu.add(connectItem);
         menuBar.add(menu);
@@ -146,17 +134,17 @@ public class UserInterface {
         JMenuItem openItem = new JMenuItem("Открыть");
         openItem.addActionListener(listener);
         openItem.setFont(FONT);
-        openItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/upload.png")));
+        openItem.setIcon(new ImageIcon(ImageLoader.getImage("upload.png")));
 
         JMenuItem saveItem = new JMenuItem("Сохранить");
         saveItem.addActionListener(listener);
         saveItem.setFont(FONT);
-        saveItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/save.png")));
+        saveItem.setIcon(new ImageIcon(ImageLoader.getImage("save.png")));
 
         JMenuItem newItem = new JMenuItem("Создать");
         newItem.addActionListener(listener);
         newItem.setFont(FONT);
-        newItem.setIcon(new ImageIcon(ImageLoader.getImage("resources/create.png")));
+        newItem.setIcon(new ImageIcon(ImageLoader.getImage("create.png")));
 
         settingsMenu.add(openItem);
         settingsMenu.add(saveItem);

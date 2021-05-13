@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -58,7 +57,8 @@ public class MainView {
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setFont(FONT);
-        frame.setIconImage(ImageLoader.getImage("resources/main_icon.png"));
+
+        frame.setIconImage(ImageLoader.getImage("main_icon.png"));
         frame.setJMenuBar(userInterface.createMenu());
         createTable();
 

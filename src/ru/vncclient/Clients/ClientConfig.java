@@ -91,7 +91,13 @@ public class ClientConfig {
 
             for (Element client : clientList) {
                 String ip = client.getChildText("ip");
-                int port = Integer.parseInt(client.getChildText("port"));
+                int port = 0;
+                try {
+                    port = Integer.parseInt(client.getChildText("port"));
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+
                 String pass = client.getChildText("password");
                 String name = client.getChildText("name");
                 clients.add(new Client(ip, port, pass, name));

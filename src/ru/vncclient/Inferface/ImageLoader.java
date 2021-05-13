@@ -1,8 +1,8 @@
 package ru.vncclient.Inferface;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.net.URL;
+import java.io.IOException;
 
 public class ImageLoader {
     private static ClassLoader classLoader;
@@ -12,7 +12,10 @@ public class ImageLoader {
     }
 
     public static Image getImage(String path) {
-        URL url = classLoader.getResource(path);
-        return new ImageIcon("/" + url).getImage();
+        try {
+            return ImageIO.read(classLoader.getResource(path));
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

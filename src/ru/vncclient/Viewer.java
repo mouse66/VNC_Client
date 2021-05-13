@@ -3,14 +3,12 @@ package ru.vncclient;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import ru.vncclient.Clients.Client;
+import ru.vncclient.Inferface.ImageLoader;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_24_TRUE;
 import static java.awt.BorderLayout.CENTER;
@@ -32,8 +30,6 @@ public class Viewer extends JFrame {
     private String name;
     private VernacularConfig config;
     private Image img;
-
-    private volatile boolean shutdown = false;
 
     public Viewer(Client client) {
         ip = client.getIp();
@@ -60,6 +56,7 @@ public class Viewer extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setFocusable(true);
+        setIconImage(ImageLoader.getImage("main_icon.png"));
         createMenu();
     }
 
@@ -87,9 +84,10 @@ public class Viewer extends JFrame {
                 e.printStackTrace();
             }
         });
+        reloadMenu.setIcon(new ImageIcon(ImageLoader.getImage("params.png")));
+
         menu.add(reloadMenu);
         menuBar.add(menu);
-
         setJMenuBar(menuBar);
     }
 
