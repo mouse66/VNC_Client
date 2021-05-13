@@ -1,5 +1,6 @@
 package ru.vncclient.VNC;
 
+import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Dialogs;
 import com.shinyhut.vernacular.client.VernacularClient;
@@ -56,15 +57,14 @@ public class VNCConnect {
      * Подкючение к вирт. машине
      * @param rowIndex строка
      * @param colIndex столбец
-     * @param ip IP-адрес вирт. машины
-     * @param port порт виртуальной машины
+     * @param client клиент {@link Client}
      * @param xml true - параметры из конфигурации, false - параметры введены вручную
      * @return VernacularClient
      */
-    public static VernacularClient connectVNC(int rowIndex, int colIndex, String ip, int port, boolean xml) {
+    public static VernacularClient connectVNC(int rowIndex, int colIndex, Client client, boolean xml) {
         VernacularConfig config = createConfig(rowIndex, colIndex, xml);
         VernacularClient vncClient = new VernacularClient(config);
-        vncClient.start(ip, port);
+        vncClient.start(client.getIp(), client.getPort());
 
         boolean isRunning = vncClient.isRunning();
 

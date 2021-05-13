@@ -103,38 +103,55 @@ public class MainView {
      * @param xml true - параметры из конфигурации, false - введены вручную
      */
     public static void connect(Client client, boolean xml) {
-        String clientIp = client.getIp();
-        int clientPort = client.getPort();
-        String name = client.getName();
+        String clientKey = client.getIp() + ":" + client.getPort();
 
-        String key = clientIp + ":" + clientPort;
         ClientList.setPassword(client.getPass());
         try {
-            if (!clientList.hasClient(key)) {
-                if (column >= COLUMN_LIMIT) {
-                    row += 1;
-                    DefaultTableModel model = (DefaultTableModel) table.getModel();
-                    model.insertRow(row, new Object[COLUMN_LIMIT]);
-                    column = 0;
-                }
-
-                VernacularClient vnc = VNCConnect.connectVNC(row, column, clientIp, clientPort, xml);
+            if (!clientList.hasClient(clientKey)) {
+                checkColumn();
+                VernacularClient vnc = VNCConnect.connectVNC(row, column, client, xml);
                 if (vnc.isRunning() || xml) {
-                    Client conClient = new Client(row, column, clientIp, clientPort,
-                            ClientList.getPassword(), name, vnc);
-                    clientList.addClient(key, conClient);
-                    column++;
-
-                    if (!xml) {
-                        config.addVncToXml(conClient);
-                    }
+                    addClientToList(xml, client, vnc);
                 }
             } else {
                 showMessageDialog(frame, "Данная машина уже подключена");
             }
-            ClientList.setPassword("");
         } catch (Exception e) {
             showMessageDialog(frame, "Ошибка при подключении!");
+        }
+        ClientList.setPassword("");
+    }
+
+    /**
+     * Добавляет клиента в clientList {@link ClientList}
+     * @param xml true - из xml конфигурации, false - введен вручную
+     * @param client клиент {@link Client}
+     * @param vnc подключение VNC
+     */
+    private static void addClientToList(boolean xml, Client client, VernacularClient vnc) {
+        String ip = client.getIp();
+        int port = client.getPort();
+
+        Client conClient = new Client(row, column, ip, port,
+                ClientList.getPassword(), client.getName(), vnc);
+        clientList.addClient(ip + ":" + port, conClient);
+        column++;
+
+        if (!xml) {
+            config.addVncToXml(conClient);
+        }
+    }
+
+    /**
+     * Проверка текущей колонки
+     * Если равно или больше, добавляет новый ряд
+     */
+    private static void checkColumn() {
+        if (column >= COLUMN_LIMIT) {
+            row += 1;
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.insertRow(row, new Object[COLUMN_LIMIT]);
+            column = 0;
         }
     }
 

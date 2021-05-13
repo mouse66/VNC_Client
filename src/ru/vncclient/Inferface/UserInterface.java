@@ -10,6 +10,7 @@ import ru.vncclient.VNC.VNCConnect;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import static ru.vncclient.Inferface.InterfaceParam.FONT;
@@ -82,29 +83,24 @@ public class UserInterface {
         String pass = client.getPass();
 
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem reloadItem = new JMenuItem("Обновить");
-        reloadItem.setFont(FONT);
-        reloadItem.setIcon(new ImageIcon(ImageLoader.getImage("refresh.png")));
-        reloadItem.addActionListener(listener -> {
+
+        JMenuItem updateItem = createItem(listener -> {
             ClientList.setPassword(pass);
-            VNCConnect.connectVNC(rowIndex, colIndex, ip, port, true);
+            VNCConnect.connectVNC(rowIndex, colIndex, client, true);
             ClientList.setPassword("");
-        });
+        }, "Обновить", "refresh.png");
 
-        JMenuItem deleteItem = new JMenuItem("Удалить");
-        deleteItem.setFont(FONT);
-        deleteItem.setIcon(new ImageIcon(ImageLoader.getImage("delete.png")));
-
-        deleteItem.addActionListener(listener -> {
+        JMenuItem deleteItem = createItem(listener -> {
             String key = ip + ":" + port;
             ClientList.stopClient(key);
             ClientList.removeClient(key);
             ClientConfig.removeClient(ip, port);
 
             MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
-        });
+        }, "Удалить", "delete.png");
 
-        popupMenu.add(reloadItem);
+
+        popupMenu.add(updateItem);
         popupMenu.add(deleteItem);
         popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
@@ -120,35 +116,15 @@ public class UserInterface {
         menu.setFont(FONT);
         JMenuBar menuBar = new JMenuBar();
 
-        JMenuItem connectItem = new JMenuItem("Подключить");
-        connectItem.addActionListener(listener);
-        connectItem.setFont(FONT);
-        connectItem.setIcon(new ImageIcon(ImageLoader.getImage("connect.png")));
-
-        menu.add(connectItem);
+        menu.add(createItem(listener, "Подключить", "connect.png"));
         menuBar.add(menu);
 
         JMenuItem settingsMenu = new JMenu("Настройки");
         settingsMenu.setFont(FONT);
 
-        JMenuItem openItem = new JMenuItem("Открыть");
-        openItem.addActionListener(listener);
-        openItem.setFont(FONT);
-        openItem.setIcon(new ImageIcon(ImageLoader.getImage("upload.png")));
-
-        JMenuItem saveItem = new JMenuItem("Сохранить");
-        saveItem.addActionListener(listener);
-        saveItem.setFont(FONT);
-        saveItem.setIcon(new ImageIcon(ImageLoader.getImage("save.png")));
-
-        JMenuItem newItem = new JMenuItem("Создать");
-        newItem.addActionListener(listener);
-        newItem.setFont(FONT);
-        newItem.setIcon(new ImageIcon(ImageLoader.getImage("create.png")));
-
-        settingsMenu.add(openItem);
-        settingsMenu.add(saveItem);
-        settingsMenu.add(newItem);
+        settingsMenu.add(createItem(listener, "Открыть", "upload.png"));
+        settingsMenu.add(createItem(listener, "Сохранить", "save.png"));
+        settingsMenu.add(createItem(listener, "Создать", "create.png"));
 
         menuBar.add(settingsMenu);
 
@@ -156,7 +132,28 @@ public class UserInterface {
     }
 
     /**
+     * Создание кнопки
+     * @param listener ActionListener
+     * @param name название кнопки
+     * @param picPath путь к картинке
+     * @return JMenuItem
+     */
+    public static JMenuItem createItem(ActionListener listener, String name, String picPath) {
+        JMenuItem menuItem = new JMenuItem(name);
+        menuItem.addActionListener(listener);
+        menuItem.setFont(FONT);
+        try {
+            ImageIcon icon = new ImageIcon(ImageLoader.getImage(picPath));
+            menuItem.setIcon(icon);
+        } catch (Exception e) {
+        }
+
+        return menuItem;
+    }
+
+    /**
      * Создание таблицы
+     *
      * @return JTable
      */
     public JTable createTable() {

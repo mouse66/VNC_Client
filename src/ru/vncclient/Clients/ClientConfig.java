@@ -137,7 +137,13 @@ public class ClientConfig {
 
         for (Element client : clientList) {
             String ipClient = client.getChildText("ip");
-            int portClient = Integer.parseInt(client.getChildText("port"));
+
+            int portClient = 0;
+            try {
+                portClient = Integer.parseInt(client.getChildText("port"));
+            } catch (NumberFormatException e) {
+                return;
+            }
 
             if (ipClient.equals(ip) && portClient == port) {
                 client.detach();
