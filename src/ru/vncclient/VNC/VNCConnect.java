@@ -6,6 +6,7 @@ import ru.vncclient.Inferface.Dialogs;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import ru.vncclient.MainView;
+import ru.vncclient.TableView;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
@@ -42,7 +43,9 @@ public class VNCConnect {
             showMessageDialog(frame, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
         });
         config.setScreenUpdateListener(image ->
-                MainView.setView(image, rowIndex, colIndex));
+                TableView.setView(image, rowIndex, colIndex));
+//        config.setScreenUpdateListener(image ->
+//                MainView.setView(image, rowIndex, colIndex));
         config.setBellListener(v ->
                 getDefaultToolkit().beep());
         config.setRemoteClipboardListener(t ->
@@ -72,7 +75,8 @@ public class VNCConnect {
         boolean isRunning = vncClient.isRunning();
 
         if (!isRunning && (params.equals(ConnectParams.XML) || params.equals(ConnectParams.JSON))) {
-            MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            //MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            TableView.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }
 
         return vncClient;

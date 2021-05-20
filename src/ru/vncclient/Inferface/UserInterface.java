@@ -3,9 +3,8 @@ package ru.vncclient.Inferface;
 import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.Listners.ImageRender;
 import ru.vncclient.Inferface.Listners.ItemSelectListener;
-import ru.vncclient.MainView;
+import ru.vncclient.TableView;
 import ru.vncclient.VNC.ConnectParams;
 import ru.vncclient.VNC.VNCConnect;
 
@@ -97,7 +96,8 @@ public class UserInterface {
             ClientList.removeClient(key);
             ClientConfig.removeClient(ip, port);
 
-            MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            //MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            TableView.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }, "Удалить", "delete.png");
 
 

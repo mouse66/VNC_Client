@@ -5,6 +5,7 @@ import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Dialogs;
 import ru.vncclient.MainView;
+import ru.vncclient.TableView;
 import ru.vncclient.VNC.ConnectParams;
 
 import javax.swing.*;
@@ -38,7 +39,8 @@ public class ItemSelectListener extends Component implements ActionListener {
                 if (file != null) {
                     ClientList.clearMap();
                     ClientConfig.setConfig(file);
-                    MainView.clearTable();
+                    TableView.clearTable();
+                    //MainView.clearTable();
                     MainView.connectClients(ClientConfig.getListClient(), ConnectParams.XML);
                 }
                 break;
@@ -48,7 +50,8 @@ public class ItemSelectListener extends Component implements ActionListener {
             case "Создать":
                 ClientList.clearMap();
                 ClientConfig.newConfig();
-                MainView.clearTable();
+                TableView.clearTable();
+                //MainView.clearTable();
                 break;
         }
     }

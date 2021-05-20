@@ -34,6 +34,8 @@ public class MainView {
     private static ClientConfig config;
     private static VNCConnect connect;
 
+    private static TableView tableView;
+
     public MainView() {
         frame = new JFrame();
         clientList = new ClientList();
@@ -69,11 +71,15 @@ public class MainView {
      * Создать таблицу
      */
     public void createTable() {
-        table = userInterface.createTable();
-        table.addMouseListener(new TableClickListener(table));
-        clearTable();
-        JScrollPane scrollPane = new JScrollPane(table);
+        tableView = new TableView();
+
+        JScrollPane scrollPane = new JScrollPane(TableView.getTable());
         frame.add(scrollPane);
+//        table = userInterface.createTable();
+//        table.addMouseListener(new TableClickListener(table));
+//        clearTable();
+//        JScrollPane scrollPane = new JScrollPane(table);
+//        frame.add(scrollPane);
     }
 
     /**
@@ -111,7 +117,7 @@ public class MainView {
         }
 
         ClientList.setPassword(client.getPass());
-        checkColumn();
+        TableView.checkColumn();
         client.setRow(row);
         client.setColumn(column);
 
