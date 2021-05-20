@@ -27,13 +27,13 @@ public class VNCConnect {
      * Создание конфигурации вирт. машины
      * @param rowIndex строка
      * @param colIndex столбец
-     * @param xml true - параметры из конфигурации, false - параметры введены вручную
+     * @param params {@link ConnectParams}
      * @return VernacularConfig
      */
-    public static VernacularConfig createConfig(int rowIndex, int colIndex, boolean xml) {
+    public static VernacularConfig createConfig(int rowIndex, int colIndex, ConnectParams params) {
         VernacularConfig config = new VernacularConfig();
         config.setColorDepth(BPP_16_TRUE);
-        if (xml) {
+        if (params.equals(ConnectParams.XML) || params.equals(ConnectParams.JSON)) {
             config.setPasswordSupplier(ClientList::getPassword);
         } else {
             config.setPasswordSupplier(Dialogs::showPasswordDialog);
@@ -58,17 +58,20 @@ public class VNCConnect {
      * @param rowIndex строка
      * @param colIndex столбец
      * @param client клиент {@link Client}
-     * @param xml true - параметры из конфигурации, false - параметры введены вручную
+     * @param params {@link ConnectParams}
      * @return VernacularClient
      */
-    public static VernacularClient connectVNC(int rowIndex, int colIndex, Client client, boolean xml) {
-        VernacularConfig config = createConfig(rowIndex, colIndex, xml);
+    public static VernacularClient connectVNC(int rowIndex, int colIndex, Client client, ConnectParams params) {
+        String ip = client.getIp();
+        int port = client.getPort();
+
+        VernacularConfig config = createConfig(rowIndex, colIndex, params);
         VernacularClient vncClient = new VernacularClient(config);
-        vncClient.start(client.getIp(), client.getPort());
+        vncClient.start(ip, port);
 
         boolean isRunning = vncClient.isRunning();
 
-        if (!isRunning && xml) {
+        if (!isRunning && (params.equals(ConnectParams.XML) || params.equals(ConnectParams.JSON))) {
             MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }
 

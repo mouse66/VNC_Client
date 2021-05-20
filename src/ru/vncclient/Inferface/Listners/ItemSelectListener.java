@@ -5,6 +5,7 @@ import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Dialogs;
 import ru.vncclient.MainView;
+import ru.vncclient.VNC.ConnectParams;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.io.File;
 public class ItemSelectListener extends Component implements ActionListener {
     /**
      * Обработка нажатий в главном меню
-     * @param e
+     * @param e ActionEvent
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -25,8 +26,11 @@ public class ItemSelectListener extends Component implements ActionListener {
             case "Подключить":
                 Client client = Dialogs.showConnectDialog();
                 if (client != null) {
-                    MainView.connect(client, false);
+                    MainView.connect(client, ConnectParams.INPUT);
                 }
+                break;
+            case "Подключение с сервера":
+                Dialogs.createConnect();
                 break;
             case "Открыть":
                 File file = Dialogs.showOpenDialog();
@@ -35,7 +39,7 @@ public class ItemSelectListener extends Component implements ActionListener {
                     ClientList.clearMap();
                     ClientConfig.setConfig(file);
                     MainView.clearTable();
-                    MainView.connectClientXML();
+                    MainView.connectClients(ClientConfig.getListClient(), ConnectParams.XML);
                 }
                 break;
             case "Сохранить":

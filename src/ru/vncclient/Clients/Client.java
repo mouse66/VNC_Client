@@ -112,17 +112,4 @@ public class Client {
     public void disconnect() {
         client.stop();
     }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "row=" + row +
-                ", column=" + column +
-                ", ip='" + ip + '\'' +
-                ", port=" + port +
-                ", pass='" + pass + '\'' +
-                ", name='" + name + '\'' +
-                ", client=" + client +
-                '}';
-    }
 }

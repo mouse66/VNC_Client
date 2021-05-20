@@ -3,6 +3,9 @@ package ru.vncclient.Inferface;
 import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
+import ru.vncclient.MainView;
+import ru.vncclient.VNC.ConnectParams;
+import ru.vncclient.VNC.ServerConnect;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -13,6 +16,7 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static javax.swing.JOptionPane.*;
 import static ru.vncclient.Inferface.InterfaceParam.FONT;
@@ -106,6 +110,52 @@ public class Dialogs {
         }
 
         return client;
+    }
+
+
+    public static void createConnect() {
+        JPanel panel = new JPanel(new GridLayout(2, 0, 0, 5));
+
+        JTextField ipField = new JTextField(15);
+        ipField.setFont(FONT);
+        JLabel ipLabel = new JLabel("IP-Адрес");
+        ipLabel.setFont(FONT);
+        ipLabel.setLabelFor(ipField);
+
+        JTextField portField = new JTextField(8);
+        portField.setFont(FONT);
+        JLabel portLabel = new JLabel("Порт");
+        portLabel.setFont(FONT);
+        portLabel.setLabelFor(portField);
+
+        panel.add(ipLabel);
+        panel.add(ipField);
+        panel.add(portLabel);
+        panel.add(portField);
+
+        int choice = showConfirmDialog(frame,
+                panel, "Подключение к серверу", JOptionPane.OK_CANCEL_OPTION);
+
+        if (choice == OK_OPTION) {
+            String ip = ipField.getText();
+            if (ip == null || ip.isEmpty()) {
+                showMessageDialog(frame, "Некорректный IP-Адрес!");
+            }
+
+            int port = 0;
+            try {
+                port = Integer.parseInt(portField.getText());
+            } catch (NumberFormatException e) {
+                showMessageDialog(frame, "Некорректный порт!");
+            }
+
+            try {
+                ArrayList<Client> clients = ServerConnect.connect(ip, port);
+                MainView.connectClients(clients, ConnectParams.JSON);
+            } catch (Exception e) {
+                showMessageDialog(frame, "Ошибка при подключении!");
+            }
+        }
     }
 
     /**

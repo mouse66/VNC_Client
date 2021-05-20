@@ -100,7 +100,9 @@ public class ClientConfig {
 
                 String pass = client.getChildText("password");
                 String name = client.getChildText("name");
-                clients.add(new Client(ip, port, pass, name));
+
+                Client c = new Client(ip, port, pass, name);
+                clients.add(c);
             }
 
         } catch (JDOMException | IOException e) {
@@ -121,7 +123,7 @@ public class ClientConfig {
      *
      * @return лист клиентов
      */
-    public ArrayList<Client> getListClient() {
+    public static ArrayList<Client> getListClient() {
         return clients;
     }
 
@@ -138,7 +140,7 @@ public class ClientConfig {
         for (Element client : clientList) {
             String ipClient = client.getChildText("ip");
 
-            int portClient = 0;
+            int portClient;
             try {
                 portClient = Integer.parseInt(client.getChildText("port"));
             } catch (NumberFormatException e) {
@@ -163,6 +165,7 @@ public class ClientConfig {
      */
     public void addVncToXml(Client client) {
         Element clientElement = new Element("client");
+
         clientElement.addContent(new Element("ip")
                 .addContent(client.getIp()));
         clientElement.addContent(new Element("port")

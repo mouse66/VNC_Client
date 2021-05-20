@@ -6,6 +6,7 @@ import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Listners.ImageRender;
 import ru.vncclient.Inferface.Listners.ItemSelectListener;
 import ru.vncclient.MainView;
+import ru.vncclient.VNC.ConnectParams;
 import ru.vncclient.VNC.VNCConnect;
 
 import javax.swing.*;
@@ -86,7 +87,7 @@ public class UserInterface {
 
         JMenuItem updateItem = createItem(listener -> {
             ClientList.setPassword(pass);
-            VNCConnect.connectVNC(rowIndex, colIndex, client, true);
+            VNCConnect.connectVNC(rowIndex, colIndex, client, ConnectParams.XML);
             ClientList.setPassword("");
         }, "Обновить", "refresh.png");
 
@@ -112,14 +113,15 @@ public class UserInterface {
     public JMenuBar createMenu() {
         ItemSelectListener listener = new ItemSelectListener();
 
-        JMenu menu = new JMenu("Меню");
+        JMenu menu = new JMenu("Подключение");
         menu.setFont(FONT);
         JMenuBar menuBar = new JMenuBar();
 
         menu.add(createItem(listener, "Подключить", "connect.png"));
+        menu.add(createItem(listener, "Подключение с сервера", "server.png"));
         menuBar.add(menu);
 
-        JMenuItem settingsMenu = new JMenu("Настройки");
+        JMenu settingsMenu = new JMenu("Настройки");
         settingsMenu.setFont(FONT);
 
         settingsMenu.add(createItem(listener, "Открыть", "upload.png"));
@@ -145,7 +147,7 @@ public class UserInterface {
         try {
             ImageIcon icon = new ImageIcon(ImageLoader.getImage(picPath));
             menuItem.setIcon(icon);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         return menuItem;
@@ -160,7 +162,8 @@ public class UserInterface {
         JTable table = new JTable();
         table.setModel(createModel());
         table.setDefaultRenderer(Object.class, new ImageRender());
-        table.setRowHeight(145);
+        int height = (800 / InterfaceParam.COLUMN_LIMIT) + (10 + InterfaceParam.COLUMN_LIMIT);
+        table.setRowHeight(height);
         table.setShowGrid(false);
         table.setCellSelectionEnabled(false);
         table.setTableHeader(null);

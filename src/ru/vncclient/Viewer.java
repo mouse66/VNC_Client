@@ -255,7 +255,7 @@ public class Viewer extends JFrame {
 
     /**
      * Пароль виртуальной машины
-     * @return passwordX
+     * @return password
      */
     public String getPassword() {
         return password;

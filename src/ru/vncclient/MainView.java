@@ -8,13 +8,12 @@ import ru.vncclient.Inferface.Dialogs;
 import ru.vncclient.Inferface.ImageLoader;
 import ru.vncclient.Inferface.Listners.TableClickListener;
 import ru.vncclient.Inferface.UserInterface;
+import ru.vncclient.VNC.ConnectParams;
 import ru.vncclient.VNC.VNCConnect;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -45,7 +44,7 @@ public class MainView {
 
         createUI();
 
-        connectClientXML();
+        connectClients(config.getListClient(), ConnectParams.XML);
     }
 
     /**
@@ -88,33 +87,39 @@ public class MainView {
     }
 
     /**
-     * Подлючение клиента из конфигурации
+     * Подключение клиентов
+     * @param clientList список клиентов
+     * @param params {@link ConnectParams}
      */
-    public static void connectClientXML() {
-        ArrayList<Client> clients = config.getListClient();
-        for (Client client : clients) {
-            connect(client, true);
+    public static void connectClients(ArrayList<Client> clientList, ConnectParams params) {
+        for (Client client : clientList) {
+            connect(client, params);
         }
     }
 
     /**
      * Подключение клиента
      * @param client {@link Client}
-     * @param xml true - параметры из конфигурации, false - введены вручную
+     * @param params {@link ConnectParams}
      */
-    public static void connect(Client client, boolean xml) {
+    public static void connect(Client client, ConnectParams params) {
         String clientKey = client.getIp() + ":" + client.getPort();
 
+        if (clientList.hasClient(clientKey)) {
+            showMessageDialog(frame, "Данная машина уже подключена");
+            return;
+        }
+
         ClientList.setPassword(client.getPass());
+        checkColumn();
+        client.setRow(row);
+        client.setColumn(column);
+
         try {
-            if (!clientList.hasClient(clientKey)) {
-                checkColumn();
-                VernacularClient vnc = VNCConnect.connectVNC(row, column, client, xml);
-                if (vnc.isRunning() || xml) {
-                    addClientToList(xml, client, vnc);
-                }
-            } else {
-                showMessageDialog(frame, "Данная машина уже подключена");
+            VernacularClient vnc = VNCConnect.connectVNC(row, column, client, params);
+            if (vnc.isRunning() || params.equals(ConnectParams.XML) || params.equals(ConnectParams.JSON)) {
+                client.setClient(vnc);
+                addClientToList(params, client, vnc);
             }
         } catch (Exception e) {
             showMessageDialog(frame, "Ошибка при подключении!");
@@ -124,11 +129,11 @@ public class MainView {
 
     /**
      * Добавляет клиента в clientList {@link ClientList}
-     * @param xml true - из xml конфигурации, false - введен вручную
+     * @param params {@link ConnectParams}
      * @param client клиент {@link Client}
      * @param vnc подключение VNC
      */
-    private static void addClientToList(boolean xml, Client client, VernacularClient vnc) {
+    private static void addClientToList(ConnectParams params, Client client, VernacularClient vnc) {
         String ip = client.getIp();
         int port = client.getPort();
 
@@ -137,7 +142,7 @@ public class MainView {
         clientList.addClient(ip + ":" + port, conClient);
         column++;
 
-        if (!xml) {
+        if (!params.equals(ConnectParams.XML)) {
             config.addVncToXml(conClient);
         }
     }
