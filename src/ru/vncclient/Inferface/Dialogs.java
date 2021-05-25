@@ -2,8 +2,9 @@ package ru.vncclient.Inferface;
 
 import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientConnector;
 import ru.vncclient.Clients.ClientList;
-import ru.vncclient.MainView;
+import ru.vncclient.MainFrame;
 import ru.vncclient.VNC.ConnectParams;
 import ru.vncclient.VNC.ServerConnect;
 
@@ -112,7 +113,9 @@ public class Dialogs {
         return client;
     }
 
-
+    /**
+     * Подключение к серверу
+     */
     public static void createConnect() {
         JPanel panel = new JPanel(new GridLayout(2, 0, 0, 5));
 
@@ -151,7 +154,7 @@ public class Dialogs {
 
             try {
                 ArrayList<Client> clients = ServerConnect.connect(ip, port);
-                MainView.connectClients(clients, ConnectParams.JSON);
+                ClientConnector.connectClients(clients, ConnectParams.JSON);
             } catch (Exception e) {
                 showMessageDialog(frame, "Ошибка при подключении!");
             }
@@ -167,8 +170,7 @@ public class Dialogs {
 
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
-            File file = new File(String.valueOf(fileChooser.getSelectedFile()));
-            return file;
+            return new File(String.valueOf(fileChooser.getSelectedFile()));
         }
 
         return null;
@@ -213,6 +215,7 @@ public class Dialogs {
         checkBox.setFont(FONT);
 
         char def = passField.getEchoChar();
+        //отображение пароля
         checkBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 passField.setEchoChar((char) 0);

@@ -2,6 +2,7 @@ package ru.vncclient.Clients;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientList {
     /**
@@ -19,7 +20,7 @@ public class ClientList {
      * @param key
      * @param value {@link Client}
      */
-    public void addClient(String key, Client value) {
+    public static void addClient(String key, Client value) {
         clientMap.put(key, value);
     }
 
@@ -39,14 +40,12 @@ public class ClientList {
      * @return {@link Client}
      */
     public static Client getClient(int rowIndex, int colIndex) {
-        Client client = null;
-        for (Client c : clientMap.values()) {
-            if (c.getColumn() == colIndex && c.getRow() == rowIndex) {
-                client = c;
-                break;
+        for (Client client : clientMap.values()) {
+            if (client.getColumn() == colIndex && client.getRow() == rowIndex) {
+                return client;
             }
         }
-        return client;
+        return null;
     }
 
     /**
@@ -62,7 +61,7 @@ public class ClientList {
      * @param key
      * @return true - содержит, false - нет
      */
-    public boolean hasClient(String key) {
+    public static boolean hasClient(String key) {
         return clientMap.containsKey(key);
     }
 

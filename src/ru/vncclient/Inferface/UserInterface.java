@@ -3,14 +3,12 @@ package ru.vncclient.Inferface;
 import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
 import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.Listners.ImageRender;
 import ru.vncclient.Inferface.Listners.ItemSelectListener;
-import ru.vncclient.MainView;
+import ru.vncclient.Table;
 import ru.vncclient.VNC.ConnectParams;
 import ru.vncclient.VNC.VNCConnect;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
@@ -22,7 +20,7 @@ public class UserInterface {
     }
 
     /**
-     * Изменение темы и перевод строк
+     * Изменение темы и перевод параметров
      */
     public void updateUIManager() {
         try {
@@ -85,24 +83,26 @@ public class UserInterface {
 
         JPopupMenu popupMenu = new JPopupMenu();
 
-        JMenuItem updateItem = createItem(listener -> {
+        JMenuItem updateClient = createItem(listener -> {
+            //переподключение к клиенту
             ClientList.setPassword(pass);
             VNCConnect.connectVNC(rowIndex, colIndex, client, ConnectParams.XML);
             ClientList.setPassword("");
         }, "Обновить", "refresh.png");
 
-        JMenuItem deleteItem = createItem(listener -> {
+        JMenuItem deleteClient = createItem(listener -> {
+            //удаление клиента из таблицы, списка и конфигурации
             String key = ip + ":" + port;
             ClientList.stopClient(key);
             ClientList.removeClient(key);
             ClientConfig.removeClient(ip, port);
 
-            MainView.setView(NOT_AVAILABLE, rowIndex, colIndex);
+            Table.setView(NOT_AVAILABLE, rowIndex, colIndex);
         }, "Удалить", "delete.png");
 
 
-        popupMenu.add(updateItem);
-        popupMenu.add(deleteItem);
+        popupMenu.add(updateClient);
+        popupMenu.add(deleteClient);
         popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
@@ -145,45 +145,13 @@ public class UserInterface {
         menuItem.addActionListener(listener);
         menuItem.setFont(FONT);
         try {
+            //загрузка изображения
             ImageIcon icon = new ImageIcon(ImageLoader.getImage(picPath));
             menuItem.setIcon(icon);
         } catch (Exception ignored) {
+            //не добавляет изображение в случае Exception
         }
 
         return menuItem;
-    }
-
-    /**
-     * Создание таблицы
-     *
-     * @return JTable
-     */
-    public JTable createTable() {
-        JTable table = new JTable();
-        table.setModel(createModel());
-        table.setDefaultRenderer(Object.class, new ImageRender());
-        int height = (800 / InterfaceParam.COLUMN_LIMIT) + (10 + InterfaceParam.COLUMN_LIMIT);
-        table.setRowHeight(height);
-        table.setShowGrid(false);
-        table.setCellSelectionEnabled(false);
-        table.setTableHeader(null);
-
-        return table;
-    }
-
-    /**
-     * Создание модели таблицы
-     * @return DefaultTableModel
-     */
-    public DefaultTableModel createModel() {
-        DefaultTableModel model = new DefaultTableModel(1,
-                InterfaceParam.COLUMN_LIMIT) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        return model;
     }
 }

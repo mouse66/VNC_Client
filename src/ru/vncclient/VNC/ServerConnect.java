@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ServerConnect {
+    /**
+     * Подключение к серверу и получение данных о виртуальных машинах
+     * @param ip IP адрес сервера
+     * @param port порт сервера
+     * @return список клиентов
+     * @throws Exception
+     */
     public static ArrayList<Client> connect(String ip, int port) throws Exception {
         URL url = new URL(String.format("http://%s:%d/getAllVMs", ip, port));
 
@@ -32,6 +39,12 @@ public class ServerConnect {
         return parseArray(response.toString());
     }
 
+    /**
+     * Лист с клиентами, полученных с сервера
+     * @param array JSON массив в виде строки
+     * @return лист с клиентами
+     * @throws ParseException ошибка в парсинге JSON
+     */
     private static ArrayList<Client> parseArray(String array) throws ParseException {
         JSONParser parser = new JSONParser();
         JSONArray object = (JSONArray) parser.parse(array);

@@ -25,17 +25,15 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.vncclient.Inferface.InterfaceParam.FONT;
 
 public class Viewer extends JFrame {
-    private VernacularClient vnc;
-    private String ip;
-    private int port;
-    private String password;
-    private String name;
+    private final VernacularClient vnc;
+    private final String password;
+    private final String name;
     private VernacularConfig config;
     private Image img;
 
     public Viewer(Client client) {
-        ip = client.getIp();
-        port = client.getPort();
+        String ip = client.getIp();
+        int port = client.getPort();
         password = client.getPass();
         name = client.getNameClient();
 
@@ -73,6 +71,7 @@ public class Viewer extends JFrame {
 
         JMenuItem reloadMenu = UserInterface.createItem(listener -> {
             try {
+                //нажатие Ctrl+Alt+Del на виртуальной машине
                 Robot robot = new Robot();
                 robot.keyPress(KeyEvent.VK_CONTROL);
                 robot.keyPress(KeyEvent.VK_ALT);
@@ -207,21 +206,31 @@ public class Viewer extends JFrame {
         }, CENTER);
     }
 
+    /**
+     * Загрузка текущего изображения в JFrame
+     * @param image текущее изображение
+     */
     private void addImage(Image image) {
         if (resizeRequired(image)) {
+            //перемасштабирование окна
             resizeWindow(image);
         }
         img = image;
         repaint();
     }
 
+    /**
+     * Необходимость перерисовки изображения
+     * @param image текущее изображение
+     * @return true - да, false - нет
+     */
     private boolean resizeRequired(Image image) {
         return img == null || img.getWidth(null) != image.getWidth(null) ||
                 img.getHeight(null) != image.getHeight(null);
     }
 
     /**
-     * Перемасшатбирование изображения
+     * Перемасшатбирование окна
      * @param image текущее изображение
      */
     private void resizeWindow(Image image) {

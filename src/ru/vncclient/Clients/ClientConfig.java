@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ClientConfig {
@@ -82,31 +83,32 @@ public class ClientConfig {
     private static void createList() {
         clients = new ArrayList<>();
 
+        SAXBuilder builder = null;
         try {
-            SAXBuilder builder = new SAXBuilder();
+            builder = new SAXBuilder();
             document = builder.build(config);
-            Element clientElement = document.getRootElement();
+        } catch (JDOMException | IOException e) {
+            return;
+        }
 
-            List<Element> clientList = clientElement.getChildren("client");
+        Element clientElement = document.getRootElement();
 
-            for (Element client : clientList) {
-                String ip = client.getChildText("ip");
-                int port = 0;
-                try {
-                    port = Integer.parseInt(client.getChildText("port"));
-                } catch (NumberFormatException e) {
-                    continue;
-                }
+        List<Element> clientList = clientElement.getChildren("client");
 
-                String pass = client.getChildText("password");
-                String name = client.getChildText("name");
-
-                Client c = new Client(ip, port, pass, name);
-                clients.add(c);
+        for (Element client : clientList) {
+            String ip = client.getChildText("ip");
+            int port = 0;
+            try {
+                port = Integer.parseInt(client.getChildText("port"));
+            } catch (NumberFormatException e) {
+                continue;
             }
 
-        } catch (JDOMException | IOException e) {
-            e.printStackTrace();
+            String pass = client.getChildText("password");
+            String name = client.getChildText("name");
+
+            Client c = new Client(ip, port, pass, name);
+            clients.add(c);
         }
     }
 
@@ -137,24 +139,27 @@ public class ClientConfig {
 
         List<Element> clientList = clientElement.getChildren("client");
 
-        for (Element client : clientList) {
-            String ipClient = client.getChildText("ip");
+        Element client = clientList.stream().filter(c -> {
+            String ipClient = c.getChildText("ip");
 
             int portClient;
             try {
-                portClient = Integer.parseInt(client.getChildText("port"));
+                portClient = Integer.parseInt(c.getChildText("port"));
             } catch (NumberFormatException e) {
-                return;
+                return false;
             }
 
-            if (ipClient.equals(ip) && portClient == port) {
-                client.detach();
-                try {
-                    writeXmlToFile(config);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return;
+            return ipClient.equals(ip) && portClient == port;
+        })
+                .findFirst()
+                .orElse(null);
+
+        if (client != null) {
+            //удаление клиента
+            client.detach();
+            try {
+                writeXmlToFile(config);
+            } catch (IOException ignored) {
             }
         }
     }
@@ -163,7 +168,7 @@ public class ClientConfig {
      * Добавить клиента в конфигурацию
      * @param client класс клиента
      */
-    public void addVncToXml(Client client) {
+    public static void addVncToXml(Client client) {
         Element clientElement = new Element("client");
 
         clientElement.addContent(new Element("ip")

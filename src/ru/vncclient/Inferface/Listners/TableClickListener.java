@@ -38,9 +38,11 @@ public class TableClickListener implements MouseListener {
         if (client != null) {
             switch (e.getButton()) {
                 case MouseEvent.BUTTON1:
+                    //открытие окна с данной машиной
                     new Viewer(client);
                     break;
                 case MouseEvent.BUTTON3:
+                    //вывоз меню для взаимодействия с машиной
                     UserInterface.createPopup(e, colIndex, rowIndex);
                     break;
             }

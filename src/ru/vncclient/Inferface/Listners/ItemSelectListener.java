@@ -2,9 +2,11 @@ package ru.vncclient.Inferface.Listners;
 
 import ru.vncclient.Clients.Client;
 import ru.vncclient.Clients.ClientConfig;
+import ru.vncclient.Clients.ClientConnector;
 import ru.vncclient.Clients.ClientList;
 import ru.vncclient.Inferface.Dialogs;
-import ru.vncclient.MainView;
+import ru.vncclient.MainFrame;
+import ru.vncclient.Table;
 import ru.vncclient.VNC.ConnectParams;
 
 import javax.swing.*;
@@ -26,7 +28,8 @@ public class ItemSelectListener extends Component implements ActionListener {
             case "Подключить":
                 Client client = Dialogs.showConnectDialog();
                 if (client != null) {
-                    MainView.connect(client, ConnectParams.INPUT);
+                    //подключение клиента
+                    ClientConnector.connect(client, ConnectParams.INPUT);
                 }
                 break;
             case "Подключение с сервера":
@@ -36,19 +39,21 @@ public class ItemSelectListener extends Component implements ActionListener {
                 File file = Dialogs.showOpenDialog();
 
                 if (file != null) {
+                    //Удаление старых виртуальных машин и загрузка новых из файла
                     ClientList.clearMap();
                     ClientConfig.setConfig(file);
-                    MainView.clearTable();
-                    MainView.connectClients(ClientConfig.getListClient(), ConnectParams.XML);
+                    Table.clearTable();
+                    ClientConnector.connectClients(ClientConfig.getListClient(), ConnectParams.XML);
                 }
                 break;
             case "Сохранить":
                 Dialogs.showSaveDialog();
                 break;
             case "Создать":
+                //очистка main_config.xml
                 ClientList.clearMap();
                 ClientConfig.newConfig();
-                MainView.clearTable();
+                Table.clearTable();
                 break;
         }
     }
