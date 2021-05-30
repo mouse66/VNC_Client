@@ -1,4 +1,4 @@
-package ru.vncclient.Clients;
+package ru.vncclient.clients;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 

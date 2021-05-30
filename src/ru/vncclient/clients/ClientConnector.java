@@ -1,9 +1,9 @@
-package ru.vncclient.Clients;
+package ru.vncclient.clients;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 import ru.vncclient.Table;
-import ru.vncclient.VNC.ConnectParams;
-import ru.vncclient.VNC.VNCConnect;
+import ru.vncclient.vnc.ConnectParams;
+import ru.vncclient.vnc.VNCConnect;
 
 import javax.swing.*;
 import java.util.ArrayList;

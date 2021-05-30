@@ -1,4 +1,4 @@
-package ru.vncclient.VNC;
+package ru.vncclient.vnc;
 
 /**
  * Параметры подключения

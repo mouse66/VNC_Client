@@ -1,15 +1,15 @@
 package ru.vncclient;
 
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.InterfaceParam;
-import ru.vncclient.Inferface.ImageRender;
-import ru.vncclient.Inferface.Listners.TableClickListener;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.InterfaceParam;
+import ru.vncclient.ui.ImageRender;
+import ru.vncclient.ui.listeners.TableClickListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-import static ru.vncclient.Inferface.InterfaceParam.COLUMN_LIMIT;
+import static ru.vncclient.ui.InterfaceParam.COLUMN_LIMIT;
 
 public class Table {
     private static JTable table;

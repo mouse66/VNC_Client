@@ -1,8 +1,7 @@
-package ru.vncclient.Clients;
+package ru.vncclient.clients;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientList {
     /**

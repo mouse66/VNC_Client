@@ -1,8 +1,8 @@
-package ru.vncclient.VNC;
+package ru.vncclient.vnc;
 
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.Dialogs;
+import ru.vncclient.clients.Client;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.Dialogs;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import ru.vncclient.Table;
@@ -14,7 +14,7 @@ import static com.shinyhut.vernacular.client.rendering.ColorDepth.*;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static ru.vncclient.Inferface.InterfaceParam.NOT_AVAILABLE;
+import static ru.vncclient.ui.InterfaceParam.NOT_AVAILABLE;
 
 public class VNCConnect {
     private static JFrame frame;

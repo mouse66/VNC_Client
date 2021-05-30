@@ -1,19 +1,19 @@
-package ru.vncclient.Inferface;
+package ru.vncclient.ui;
 
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientConfig;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.Listners.ItemSelectListener;
+import ru.vncclient.clients.Client;
+import ru.vncclient.clients.ClientConfig;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.listeners.ItemSelectListener;
 import ru.vncclient.Table;
-import ru.vncclient.VNC.ConnectParams;
-import ru.vncclient.VNC.VNCConnect;
+import ru.vncclient.vnc.ConnectParams;
+import ru.vncclient.vnc.VNCConnect;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import static ru.vncclient.Inferface.InterfaceParam.FONT;
-import static ru.vncclient.Inferface.InterfaceParam.NOT_AVAILABLE;
+import static ru.vncclient.ui.InterfaceParam.FONT;
+import static ru.vncclient.ui.InterfaceParam.NOT_AVAILABLE;
 
 public class UserInterface {
     public UserInterface() {

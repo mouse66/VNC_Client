@@ -1,4 +1,4 @@
-package ru.vncclient.Inferface;
+package ru.vncclient.ui;
 
 import java.awt.*;
 

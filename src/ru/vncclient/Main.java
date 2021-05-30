@@ -1,6 +1,6 @@
 package ru.vncclient;
 
-import ru.vncclient.Inferface.ImageLoader;
+import ru.vncclient.ui.ImageLoader;
 
 public class Main {
     public static void main(String[] args) {

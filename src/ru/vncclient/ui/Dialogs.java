@@ -1,12 +1,11 @@
-package ru.vncclient.Inferface;
+package ru.vncclient.ui;
 
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientConfig;
-import ru.vncclient.Clients.ClientConnector;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.MainFrame;
-import ru.vncclient.VNC.ConnectParams;
-import ru.vncclient.VNC.ServerConnect;
+import ru.vncclient.clients.Client;
+import ru.vncclient.clients.ClientConfig;
+import ru.vncclient.clients.ClientConnector;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.vnc.ConnectParams;
+import ru.vncclient.vnc.ServerConnect;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static javax.swing.JOptionPane.*;
-import static ru.vncclient.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.ui.InterfaceParam.FONT;
 
 public class Dialogs {
     private static final AncestorListener focusRequester = new AncestorListener() {

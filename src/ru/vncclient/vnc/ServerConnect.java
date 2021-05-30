@@ -1,10 +1,10 @@
-package ru.vncclient.VNC;
+package ru.vncclient.vnc;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import ru.vncclient.Clients.Client;
+import ru.vncclient.clients.Client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

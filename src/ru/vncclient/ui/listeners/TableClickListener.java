@@ -1,8 +1,8 @@
-package ru.vncclient.Inferface.Listners;
+package ru.vncclient.ui.listeners;
 
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.UserInterface;
+import ru.vncclient.clients.Client;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.UserInterface;
 import ru.vncclient.Viewer;
 
 import javax.swing.*;

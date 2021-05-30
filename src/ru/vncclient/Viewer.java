@@ -2,14 +2,12 @@ package ru.vncclient;
 
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.ImageLoader;
-import ru.vncclient.Inferface.UserInterface;
+import ru.vncclient.clients.Client;
+import ru.vncclient.ui.ImageLoader;
+import ru.vncclient.ui.UserInterface;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
@@ -22,7 +20,7 @@ import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.Math.min;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static ru.vncclient.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.ui.InterfaceParam.FONT;
 
 public class Viewer extends JFrame {
     private final VernacularClient vnc;

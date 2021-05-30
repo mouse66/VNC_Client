@@ -1,22 +1,18 @@
 package ru.vncclient;
 
-import com.shinyhut.vernacular.client.VernacularClient;
-import ru.vncclient.Clients.Client;
-import ru.vncclient.Clients.ClientConfig;
-import ru.vncclient.Clients.ClientConnector;
-import ru.vncclient.Clients.ClientList;
-import ru.vncclient.Inferface.Dialogs;
-import ru.vncclient.Inferface.ImageLoader;
-import ru.vncclient.Inferface.UserInterface;
-import ru.vncclient.VNC.ConnectParams;
-import ru.vncclient.VNC.VNCConnect;
+import ru.vncclient.clients.ClientConfig;
+import ru.vncclient.clients.ClientConnector;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.Dialogs;
+import ru.vncclient.ui.ImageLoader;
+import ru.vncclient.ui.UserInterface;
+import ru.vncclient.vnc.ConnectParams;
+import ru.vncclient.vnc.VNCConnect;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static ru.vncclient.Inferface.InterfaceParam.FONT;
+import static ru.vncclient.ui.InterfaceParam.FONT;
 
 public class MainFrame extends JFrame {
     private static UserInterface userInterface;
