@@ -82,7 +82,7 @@ public class ClientConfig {
     private static void createList() {
         clients = new ArrayList<>();
 
-        SAXBuilder builder = null;
+        SAXBuilder builder;
         try {
             builder = new SAXBuilder();
             document = builder.build(config);

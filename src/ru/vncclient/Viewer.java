@@ -10,9 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_24_TRUE;
-import static java.awt.BorderLayout.CENTER;
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import static java.awt.RenderingHints.KEY_INTERPOLATION;
 import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
@@ -23,7 +24,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.vncclient.ui.InterfaceParam.FONT;
 
 public class Viewer extends JFrame {
-    private final VernacularClient vnc;
+    private final VernacularClient client;
     private final String password;
     private final String name;
     private VernacularConfig config;
@@ -41,8 +42,8 @@ public class Viewer extends JFrame {
         createMouseListener();
         createKeyboardListener();
 
-        vnc = new VernacularClient(config);
-        vnc.start(ip, port);
+        this.client = new VernacularClient(config);
+        this.client.start(ip, port);
     }
 
     /**
@@ -54,6 +55,7 @@ public class Viewer extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setFocusable(true);
+        setLayout(new BorderLayout());
         setIconImage(ImageLoader.getImage("main_icon.png"));
         createMenu();
     }
@@ -98,7 +100,7 @@ public class Viewer extends JFrame {
      * @return true - активен, false - нет
      */
     private boolean isClientWork() {
-        return vnc != null && vnc.isRunning();
+        return client != null && client.isRunning();
     }
 
     /**
@@ -109,14 +111,14 @@ public class Viewer extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (isClientWork()) {
-                    vnc.updateMouseButton(e.getButton(), true);
+                    client.updateMouseButton(e.getButton(), true);
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (isClientWork()) {
-                    vnc.updateMouseButton(e.getButton(), false);
+                    client.updateMouseButton(e.getButton(), false);
                 }
             }
         });
@@ -130,7 +132,7 @@ public class Viewer extends JFrame {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isClientWork()) {
-                    vnc.moveMouse(e.getX(), e.getY());
+                    client.moveMouse(e.getX(), e.getY());
                 }
             }
         });
@@ -139,9 +141,9 @@ public class Viewer extends JFrame {
             if (isClientWork()) {
                 int scroll = listener.getWheelRotation();
                 if (scroll < 0) {
-                    vnc.scrollUp();
+                    client.scrollUp();
                 } else {
-                    vnc.scrollDown();
+                    client.scrollDown();
                 }
             }
         });
@@ -156,14 +158,14 @@ public class Viewer extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (isClientWork()) {
-                    vnc.handleKeyEvent(e);
+                    client.handleKeyEvent(e);
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 if (isClientWork()) {
-                    vnc.handleKeyEvent(e);
+                    client.handleKeyEvent(e);
                 }
             }
         });
@@ -190,18 +192,39 @@ public class Viewer extends JFrame {
      * Отрисовка изображения
      */
     private void createView() {
-        add(new JPanel() {
+        JPanel panel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (img != null) {
+                    int imgX = img.getWidth(null);
+                    int imgY = img.getHeight(null);
+
+                    int frameX = getContentPane().getWidth();
+                    int frameY = getContentPane().getHeight();
+
+                    int x = 0;
+                    int y = 0;
+                    if (frameX < imgX || frameY < imgY) {
+                        img = img.getScaledInstance(frameX, frameY, Image.SCALE_SMOOTH);
+                    } else {
+                        //расчет точек для расположения изображения по центру при любых разрешениях больше изображения
+                        x = (frameX - imgX) / 2;
+                        y = (frameY - imgY) / 2;
+                    }
+
                     Graphics2D g2 = (Graphics2D) g;
                     g2.setRenderingHint(KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR);
-                    g2.drawImage(img, 0, 0, getContentPane().getWidth(),
-                            getContentPane().getHeight(), null);
+                    g2.drawImage(img, x, y,
+                            img.getWidth(null),
+                            img.getHeight(null),
+                            null);
                 }
             }
-        }, CENTER);
+        };
+        panel.setBackground(Color.BLACK);
+
+        add(panel);
     }
 
     /**

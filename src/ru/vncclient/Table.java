@@ -59,22 +59,20 @@ public class Table {
      * @return DefaultTableModel
      */
     public static DefaultTableModel createModel() {
-        DefaultTableModel model = new DefaultTableModel(1, COLUMN_LIMIT) {
+        return new DefaultTableModel(1, COLUMN_LIMIT) {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(int row1, int column1) {
                 return false;
             }
         };
-
-        return model;
     }
 
     /**
      * Проверка текущей колонки
-     * Если равно или больше, добавляет новый ряд
      */
     public static void checkColumn() {
         if (column >= COLUMN_LIMIT) {
+            //добавление строки в таблицу
             row += 1;
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.insertRow(row, new Object[COLUMN_LIMIT]);
@@ -106,7 +104,7 @@ public class Table {
     }
 
     /**
-     * Увеличивет колонку на 1
+     * Увеличение текущей колонки на 1
      */
     public static void enlargeColumn() {
         Table.column += 1;

@@ -1,16 +1,16 @@
 package ru.vncclient.vnc;
 
-import ru.vncclient.clients.Client;
-import ru.vncclient.clients.ClientList;
-import ru.vncclient.ui.Dialogs;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import ru.vncclient.Table;
+import ru.vncclient.clients.Client;
+import ru.vncclient.clients.ClientList;
+import ru.vncclient.ui.Dialogs;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
 
-import static com.shinyhut.vernacular.client.rendering.ColorDepth.*;
+import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_16_TRUE;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -20,14 +20,15 @@ public class VNCConnect {
     private static JFrame frame;
 
     public VNCConnect(JFrame frame) {
-        this.frame = frame;
+        VNCConnect.frame = frame;
     }
 
     /**
      * Создание конфигурации вирт. машины
+     *
      * @param rowIndex строка
      * @param colIndex столбец
-     * @param params {@link ConnectParams}
+     * @param params   {@link ConnectParams}
      * @return VernacularConfig
      */
     public static VernacularConfig createConfig(int rowIndex, int colIndex, ConnectParams params) {
@@ -55,10 +56,11 @@ public class VNCConnect {
 
     /**
      * Подкючение к вирт. машине
+     *
      * @param rowIndex строка
      * @param colIndex столбец
-     * @param client клиент {@link Client}
-     * @param params {@link ConnectParams}
+     * @param client   клиент {@link Client}
+     * @param params   {@link ConnectParams}
      * @return VernacularClient
      */
     public static VernacularClient connectVNC(int rowIndex, int colIndex, Client client, ConnectParams params) {

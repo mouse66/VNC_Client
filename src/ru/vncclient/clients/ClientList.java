@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientList {
+
     /**
      * Ключ в формате "ip:port"
      */
@@ -91,7 +92,8 @@ public class ClientList {
     }
 
     /**
-     * Текущий введенный пароль пользователем, или из конфигурации
+     * Текущий введенный пароль
+     *
      * @return passwordCurrent
      */
     public static String getPassword() {

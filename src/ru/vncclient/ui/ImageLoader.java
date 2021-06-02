@@ -4,15 +4,11 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * Класс для загрузки изображений из ресурсов
+ */
 public class ImageLoader {
-    private static ClassLoader classLoader;
-
-    /**
-     * Класс для загрузки изображений из ресурсов
-     */
-    public ImageLoader() {
-        classLoader = getClass().getClassLoader();
-    }
+    private static final ClassLoader classLoader = ImageLoader.class.getClassLoader();
 
     /**
      * Получить изображение из ресурсов

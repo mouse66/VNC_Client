@@ -1,10 +1,9 @@
-package ru.vncclient.vnc;
+package ru.vncclient.clients;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import ru.vncclient.clients.Client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,19 +15,23 @@ import java.util.Iterator;
 public class ServerConnect {
     /**
      * Подключение к серверу и получение данных о виртуальных машинах
-     * @param ip IP адрес сервера
-     * @param port порт сервера
+     *
+     * @param host адресс сервера
      * @return список клиентов
      * @throws Exception
      */
-    public static ArrayList<Client> connect(String ip, int port) throws Exception {
-        URL url = new URL(String.format("http://%s:%d/getAllVMs", ip, port));
+    public static ArrayList<Client> connect(String host) throws Exception {
+        if (!host.startsWith("http://")) {
+            host = "http://" + host;
+        }
+
+        URL url = new URL(host);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine = "";
+        String inputLine;
         StringBuilder response = new StringBuilder();
 
         while ((inputLine = in.readLine()) != null) {
@@ -56,12 +59,15 @@ public class ServerConnect {
             JSONObject obj = (JSONObject) iterator.next();
 
             try {
-                int port = Integer.parseInt(String.valueOf(obj.get("port")));
                 String ip = String.valueOf(obj.get("ip"));
-                Client client = new Client(ip, port, "");
+                int port = Integer.parseInt(String.valueOf(obj.get("port")));
+                String password = String.valueOf(obj.get("password"));
+
+                Client client = new Client(ip, port, password, "");
 
                 clients.add(client);
             } catch (Exception ignored) {
+                continue;
             }
         }
 

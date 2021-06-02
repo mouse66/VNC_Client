@@ -5,7 +5,7 @@ import ru.vncclient.clients.ClientConfig;
 import ru.vncclient.clients.ClientConnector;
 import ru.vncclient.clients.ClientList;
 import ru.vncclient.vnc.ConnectParams;
-import ru.vncclient.vnc.ServerConnect;
+import ru.vncclient.clients.ServerConnect;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -116,43 +116,29 @@ public class Dialogs {
      * Подключение к серверу
      */
     public static void createConnect() {
-        JPanel panel = new JPanel(new GridLayout(2, 0, 0, 5));
+        JPanel panel = new JPanel(new GridLayout(1, 0, 0, 5));
 
         JTextField ipField = new JTextField(15);
         ipField.setFont(FONT);
-        JLabel ipLabel = new JLabel("IP-Адрес");
+        JLabel ipLabel = new JLabel("Хост");
         ipLabel.setFont(FONT);
         ipLabel.setLabelFor(ipField);
 
-        JTextField portField = new JTextField(8);
-        portField.setFont(FONT);
-        JLabel portLabel = new JLabel("Порт");
-        portLabel.setFont(FONT);
-        portLabel.setLabelFor(portField);
-
         panel.add(ipLabel);
         panel.add(ipField);
-        panel.add(portLabel);
-        panel.add(portField);
 
         int choice = showConfirmDialog(frame,
                 panel, "Подключение к серверу", JOptionPane.OK_CANCEL_OPTION);
 
         if (choice == OK_OPTION) {
-            String ip = ipField.getText();
-            if (ip == null || ip.isEmpty()) {
-                showMessageDialog(frame, "Некорректный IP-Адрес!");
-            }
-
-            int port = 0;
-            try {
-                port = Integer.parseInt(portField.getText());
-            } catch (NumberFormatException e) {
-                showMessageDialog(frame, "Некорректный порт!");
+            String host = ipField.getText();
+            if (host == null || host.isEmpty()) {
+                showMessageDialog(frame, "Некорректный хост!");
+                return;
             }
 
             try {
-                ArrayList<Client> clients = ServerConnect.connect(ip, port);
+                ArrayList<Client> clients = ServerConnect.connect(host);
                 ClientConnector.connectClients(clients, ConnectParams.JSON);
             } catch (Exception e) {
                 showMessageDialog(frame, "Ошибка при подключении!");
