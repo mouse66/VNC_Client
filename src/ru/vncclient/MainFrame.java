@@ -11,9 +11,9 @@ import ru.vncclient.vnc.VNCConnect;
 
 import javax.swing.*;
 
-import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.vncclient.ui.InterfaceParam.FONT;
 
+@SuppressWarnings("ALL")
 public class MainFrame extends JFrame {
     private static UserInterface userInterface;
 

@@ -67,7 +67,6 @@ public class ServerConnect {
 
                 clients.add(client);
             } catch (Exception ignored) {
-                continue;
             }
         }
 

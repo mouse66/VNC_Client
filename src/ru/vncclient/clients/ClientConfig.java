@@ -37,6 +37,7 @@ public class ClientConfig {
      * @param f файл для записи
      * @throws IOException
      */
+    @SuppressWarnings("JavaDoc")
     public static void writeXmlToFile(File f) throws IOException {
         writer = new FileWriter(f, false);
 
@@ -96,7 +97,7 @@ public class ClientConfig {
 
         for (Element client : clientList) {
             String ip = client.getChildText("ip");
-            int port = 0;
+            int port;
             try {
                 port = Integer.parseInt(client.getChildText("port"));
             } catch (NumberFormatException e) {

@@ -3,6 +3,7 @@ package ru.vncclient;
 import com.shinyhut.vernacular.client.VernacularClient;
 import com.shinyhut.vernacular.client.VernacularConfig;
 import ru.vncclient.clients.Client;
+import ru.vncclient.keyboards.CyrillicParser;
 import ru.vncclient.ui.ImageLoader;
 import ru.vncclient.ui.UserInterface;
 
@@ -10,13 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 import static com.shinyhut.vernacular.client.rendering.ColorDepth.BPP_24_TRUE;
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
-import static java.awt.RenderingHints.KEY_INTERPOLATION;
-import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.Math.min;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
@@ -88,11 +87,56 @@ public class Viewer extends JFrame {
 
         JMenuItem sendMenu = UserInterface.createItem(listener -> {
             //TODO: написать ввод с буфера обмена/клавиатуры
+            //Костыльно и хуево
+//            String text = "hELLo WoRlD 1337 хуЙ жОпА,sdf'[l[[lp[";
+//
+//            Robot robot = null;
+//            try {
+//                robot = new Robot();
+//            } catch (AWTException e) {
+//                return;
+//            }
+//
+//            for (char c : text.toCharArray()) {
+//                int keyCode;
+//
+//                boolean cyrillic = false;
+//                if (Character.UnicodeBlock.of(c).equals(Character.UnicodeBlock.CYRILLIC)) {
+//                    keyCode = CyrillicParser.getEngKeyCode(c);
+//                    cyrillic = true;
+//
+//                    switchLanguage(robot);
+//                } else {
+//                    keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+//                }
+//
+//                if (Character.isUpperCase(c)) {
+//                    robot.keyPress(KeyEvent.VK_SHIFT);
+//                    robot.keyPress(keyCode);
+//                    robot.keyRelease(keyCode);
+//                    robot.keyRelease(KeyEvent.VK_SHIFT);
+//                } else {
+//                    robot.keyPress(keyCode);
+//                    robot.keyRelease(keyCode);
+//                }
+//
+//                if (cyrillic) {
+//                    switchLanguage(robot);
+//                }
+//            }
         }, "Вставить текст", "clipboard.png");
         menu.add(sendMenu);
 
         menuBar.add(menu);
         setJMenuBar(menuBar);
+    }
+
+    private void switchLanguage(Robot robot) {
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_SHIFT);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_SHIFT);
+        robot.delay(100);
     }
 
     /**
@@ -178,11 +222,9 @@ public class Viewer extends JFrame {
         config = new VernacularConfig();
 
         config.setColorDepth(BPP_24_TRUE);
-        config.setErrorListener(e -> {
-            showMessageDialog(this, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
-        });
+        config.setErrorListener(e -> showMessageDialog(this, e.getMessage(), "Ошибка!", ERROR_MESSAGE));
         config.setPasswordSupplier(this::getPassword);
-        config.setScreenUpdateListener(image -> addImage(image));
+        config.setScreenUpdateListener(this::addImage);
         config.setBellListener(v -> getDefaultToolkit().beep());
         config.setRemoteClipboardListener(t -> getDefaultToolkit().getSystemClipboard().setContents(
                 new StringSelection(t), null));
@@ -197,31 +239,29 @@ public class Viewer extends JFrame {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (img != null) {
-                    int imgX = img.getWidth(null);
-                    int imgY = img.getHeight(null);
+                    int imgWidth = img.getWidth(this);
+                    int imgHeight = img.getHeight(this);
 
-                    int frameX = getContentPane().getWidth();
-                    int frameY = getContentPane().getHeight();
+                    int frameWidth = getContentPane().getWidth();
+                    int frameHeight = getContentPane().getHeight();
 
                     int x = 0;
                     int y = 0;
-                    if (frameX < imgX || frameY < imgY) {
-                        img = img.getScaledInstance(frameX, frameY, Image.SCALE_SMOOTH);
+                    if (frameWidth < imgWidth || frameHeight < imgHeight) {
+                        img = img.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
                     } else {
                         //расчет точек для расположения изображения по центру при любых разрешениях больше изображения
-                        x = (frameX - imgX) / 2;
-                        y = (frameY - imgY) / 2;
+                        x = (frameWidth - imgWidth) / 2;
+                        y = (frameHeight - imgHeight) / 2;
                     }
 
                     Graphics2D g2 = (Graphics2D) g;
-                    g2.setRenderingHint(KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR);
-                    g2.drawImage(img, x, y,
-                            img.getWidth(null),
-                            img.getHeight(null),
-                            null);
+                    g2.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                    g2.drawImage(img, x, y, imgWidth, imgHeight, this);
                 }
             }
         };
+
         panel.setBackground(Color.BLACK);
 
         add(panel);

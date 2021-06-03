@@ -44,7 +44,7 @@ public class Dialogs {
      * @param frame главное окно
      */
     public Dialogs(JFrame frame) {
-        this.frame = frame;
+        Dialogs.frame = frame;
         File home = FileSystemView.getFileSystemView().getDefaultDirectory();
         mainFolder = new File(home, "VNC Viewer");
     }

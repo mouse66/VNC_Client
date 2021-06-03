@@ -39,9 +39,7 @@ public class VNCConnect {
         } else {
             config.setPasswordSupplier(Dialogs::showPasswordDialog);
         }
-        config.setErrorListener(e -> {
-            showMessageDialog(frame, e.getMessage(), "Ошибка!", ERROR_MESSAGE);
-        });
+        config.setErrorListener(e -> showMessageDialog(frame, e.getMessage(), "Ошибка!", ERROR_MESSAGE));
         config.setScreenUpdateListener(image ->
                 Table.setView(image, rowIndex, colIndex));
         config.setBellListener(v ->
