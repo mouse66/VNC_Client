@@ -85,48 +85,6 @@ public class Viewer extends JFrame {
         }, "Ctrl + Alt + Del", "params.png");
         menu.add(reloadMenu);
 
-        JMenuItem sendMenu = UserInterface.createItem(listener -> {
-            //TODO: написать ввод с буфера обмена/клавиатуры
-            //Костыльно и хуево
-//            String text = "hELLo WoRlD 1337 хуЙ жОпА,sdf'[l[[lp[";
-//
-//            Robot robot = null;
-//            try {
-//                robot = new Robot();
-//            } catch (AWTException e) {
-//                return;
-//            }
-//
-//            for (char c : text.toCharArray()) {
-//                int keyCode;
-//
-//                boolean cyrillic = false;
-//                if (Character.UnicodeBlock.of(c).equals(Character.UnicodeBlock.CYRILLIC)) {
-//                    keyCode = CyrillicParser.getEngKeyCode(c);
-//                    cyrillic = true;
-//
-//                    switchLanguage(robot);
-//                } else {
-//                    keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
-//                }
-//
-//                if (Character.isUpperCase(c)) {
-//                    robot.keyPress(KeyEvent.VK_SHIFT);
-//                    robot.keyPress(keyCode);
-//                    robot.keyRelease(keyCode);
-//                    robot.keyRelease(KeyEvent.VK_SHIFT);
-//                } else {
-//                    robot.keyPress(keyCode);
-//                    robot.keyRelease(keyCode);
-//                }
-//
-//                if (cyrillic) {
-//                    switchLanguage(robot);
-//                }
-//            }
-        }, "Вставить текст", "clipboard.png");
-        menu.add(sendMenu);
-
         menuBar.add(menu);
         setJMenuBar(menuBar);
     }
